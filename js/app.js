@@ -6,9 +6,35 @@ var validation = angular.module('ChatApp', ['ngMessages']);
 // create angular controller
 validation.controller('ChatCtrl', ["$scope", function($scope) {
 
+    var options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    };
+
+    function success(pos) {
+      var crd = pos.coords;
+
+      console.log('Your current position is:');
+      console.log('Latitude : ' + crd.latitude);
+      console.log('Longitude: ' + crd.longitude);
+      console.log('More or less ' + crd.accuracy + ' meters.');
+    };
+
+    function error(err) {
+      console.warn('ERROR(' + err.code + '): ' + err.message);
+    };
+
+
     // function to submit the form after all validation has occurred            
     $scope.submitForm = function(isValid) {
     	// check to make sure the form is completely valid
+        if(navigator.geolocation) {
+           $scope.loc = navigator.geolocation.getCurrentPosition(success, error, options);
+           console.log($scope.loc);
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+        }
     };
 
     //Checks both password fields and if they match each other
