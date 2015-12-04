@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="author" content="Alex Ramos">
+		<meta name="author" content="Josh Hall">
+		<meta name="author" content="Eric Berner">
+		<meta name="author" content="Sukhman Tiwana">
+
+		<title>_______TITLE_______</title>
+
+		<!-- bootstrap -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+		<link rel="stylesheet" href="css/main.css"/>
+
+		<!-- include libraries -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+
+		<!-- load ngmessages -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-messages.js"></script>
+		<!-- load JQuery -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+		<script src="js/app.js"></script>
+
+		<link rel="icon" href="_______ICON_______"/>
+	</head>
+
+	<body  class="container" ng-app="ChatApp" ng-controller="ChatCtrl as main">
+		<form name="chatForm" id="chatForm" novalidate>
+			<h1>____HEADER_____</h1>	
+			<!-- EMAIL -->
+			<div class="form-group" ng-class="{ 'has-error': chatForm.username.$touched && chatForm.username.$invalid }">
+				<label>Email</label>
+				<input type="username" name="username" placeholder="Username" class="form-control" ng-model="main.username" required>
+				<div class="help-block" ng-messages="chatForm.username.$error" ng-if="chatForm.username.$touched">
+					<p ng-message="required">Your username address is required.</p>
+					<p ng-message="username">Your username address is invalid.</p>
+				</div>
+			</div>
+
+			<!-- Password entries -->
+			<div class="form-group" ng-class="{ 'has-error': chatForm.password.$touched && chatForm.password.$invalid}">
+				<label>Password</label>
+				<input type="password" name="password" placeholder="Password" class="form-control" ng-model="main.password" ng-change="checkFormPass()" required>
+				<div class="help-block" ng-messages="chatForm.password.$error" ng-if="chatForm.password.$touched">
+					<p ng-message="required">Please enter a password</p>
+				</div>
+			</div>
+
+			<!--The submit button and reset button.-->
+			<button id="reset" class="btn btn-success" value="Reset" ng-click="reset()">Reset</button>
+			<button type="submit" class="btn btn-success" ng-click="submitForm(chatForm.$valid)" ng-disabled="chatForm.$invalid" id="submitButton" value="Submit">Sign Up!</button>
+
+		</form>
+	</body>
+</html>

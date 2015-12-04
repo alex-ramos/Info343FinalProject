@@ -32,43 +32,13 @@
 
 	<body  class="container" ng-app="ChatApp" ng-controller="ChatCtrl as main">
 		<form name="chatForm" id="chatForm" novalidate>
-			<h1>Sign Up</h1>	
-			<!-- EMAIL -->
-			<div class="form-group" ng-class="{ 'has-error': chatForm.username.$touched && chatForm.username.$invalid }">
-				<label>Username</label>
-				<input type="username" name="username" placeholder="Username" class="form-control" ng-model="main.username" ng-minlength="7" required>
-				<div class="help-block" ng-messages="chatForm.username.$error" ng-if="chatForm.username.$touched">
-					<p ng-message="required">Your username address is required.</p>
-					<p ng-message="username">Your username address is invalid.</p>
-					<p ng-message="minlength">Your username must be atleast 7 characters.</p>
-				</div>
-			</div>
+			<h1>____HEADER_____</h1>	
+			
 
-			<!-- Password entries -->
-			<div class="form-group" ng-class="{ 'has-error': chatForm.password.$touched && chatForm.password.$invalid}">
-				<label>Password</label>
-				<input type="password" name="password" placeholder="Password" class="form-control" ng-model="main.password" ng-change="checkFormPass()" ng-minlength="7" required>
-				<div class="help-block" ng-messages="chatForm.password.$error" ng-if="chatForm.password.$touched">
-					<p ng-message="required">Please enter a password</p>
-					<p ng-message="minlength">Your username must be atleast 7 characters.</p>
-				</div>
-			</div>
+			<!--The submit button and reset button.-->
+			<a href="signin.html"><button id="reset" class="btn btn-success" ng-click="signIn()">Sign In!</button></a>
+			<a href="signup.html"><button type="submit" class="btn btn-success" ng-click="newUser()" ng-disabled="chatForm.$invalid" id="submitButton" value="Submit">Sign Up!</button></
 
-			<div class="form-group" ng-class="{ 'has-error': chatForm.cPassw.$touched && chatForm.cPassw.$invalid}">
-				<label>Confirm Password</label>
-				<input type="password" name="cPassw" placeholder="Confirm Password" class="form-control" ng-model="main.cPassw" ng-change="checkFormPass()"  required>
-				<div class="help-block" ng-messages="chatForm.cPassw.$error" ng-if="chatForm.cPassw.$touched">
-					<p ng-message="required">Please confirm your password</p>
-				</div>
-				<div class="help-block" ng-if="chatForm.cPassw.$invalid && chatForm.cPassw.$touched">
-					<p>Please make sure both of your passwords match.</p>
-				</div>
-			</div>
-			<!-- Submit buttons -->
-			<div class="form-group">
-				<button type="submit" class="btn btn-primary" ng-click="signUp()" ng-disabled="signupForm.$invalid" >Sign-up</button> 
-				<button type="submit" class="btn btn-primary" ng-click="signIn()" ng-disabled="signupForm.password.$invalid" >Sign-in</button>
-			</div>
 		</form>
 	<!-- load external libraries -->
 	<script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>

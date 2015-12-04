@@ -60,4 +60,19 @@ validation.controller('ChatCtrl', ["$scope", function($scope) {
     $scope.reset = function(){
     	$('input').val = 0;
     };
+
+
+
+    $scope.signIn = function(){
+        var newUrl = "signin.html";
+        document.location.href = newUrl;
+
+    };
+
+
+
+    $scope.newUser = function(){
+        var newUrl = "signup.html";
+        document.location.href = newUrl;
+    };
 }]);
