@@ -23,8 +23,6 @@
 		<!-- load JQuery -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
-		<script src="js/app.js"></script>
-
 		<link rel="icon" href="_______ICON_______"/>
 	</head>
 
@@ -33,20 +31,22 @@
 			<h1>____HEADER_____</h1>	
 			<!-- EMAIL -->
 			<div class="form-group" ng-class="{ 'has-error': chatForm.username.$touched && chatForm.username.$invalid }">
-				<label>Email</label>
-				<input type="username" name="username" placeholder="Username" class="form-control" ng-model="main.username" required>
+				<label>Username</label>
+				<input type="username" name="username" placeholder="Username" class="form-control" ng-model="main.username" ng-minlength="7" required>
 				<div class="help-block" ng-messages="chatForm.username.$error" ng-if="chatForm.username.$touched">
 					<p ng-message="required">Your username address is required.</p>
 					<p ng-message="username">Your username address is invalid.</p>
+					<p ng-message="minlength">Your username must be atleast 7 characters.</p>
 				</div>
 			</div>
 
 			<!-- Password entries -->
 			<div class="form-group" ng-class="{ 'has-error': chatForm.password.$touched && chatForm.password.$invalid}">
 				<label>Password</label>
-				<input type="password" name="password" placeholder="Password" class="form-control" ng-model="main.password" ng-change="checkFormPass()" required>
+				<input type="password" name="password" placeholder="Password" class="form-control" ng-model="main.password" ng-change="checkFormPass()" ng-minlength="7" required>
 				<div class="help-block" ng-messages="chatForm.password.$error" ng-if="chatForm.password.$touched">
 					<p ng-message="required">Please enter a password</p>
+					<p ng-message="minlength">Your username must be atleast 7 characters.</p>
 				</div>
 			</div>
 
@@ -60,11 +60,17 @@
 					<p>Please make sure both of your passwords match.</p>
 				</div>
 			</div>
-
-			<!--The submit button and reset button.-->
-			<button id="reset" class="btn btn-success" value="Reset" ng-click="reset()">Reset</button>
-			<button type="submit" class="btn btn-success" ng-click="submitForm(chatForm.$valid)" ng-disabled="chatForm.$invalid" id="submitButton" value="Submit">Sign Up!</button>
-
+			<!-- Submit buttons -->
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary" ng-click="signUp()" ng-disabled="signupForm.$invalid" >Sign-up</button> 
+				<button type="submit" class="btn btn-primary" ng-click="signIn()" ng-disabled="signupForm.password.$invalid" >Sign-in</button>
+			</div>
 		</form>
+	<!-- load external libraries -->
+	<script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
+	<script src="https://cdn.firebase.com/libs/angularfire/1.1.3/angularfire.min.js"></script>
+
+	<!-- load our script -->
+	<script src="js/app.js"></script>
 	</body>
 </html>
