@@ -8,7 +8,7 @@ validation.controller('ChatCtrl', ["$scope", function($scope) {
 
     var options = {
       enableHighAccuracy: true,
-      timeout: 5000,
+      timeout: Infinity,
       maximumAge: 0
     };
 
