@@ -5,7 +5,7 @@ var ChatApp = angular.module('ChatApp', ['ngMessages', 'firebase']);
 
 // create angular controller
 ChatApp.controller('LoginCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleLogin',  function($scope, $firebaseArray, $firebaseSimpleLogin) {
-    var ref = new Firebase("");
+    var ref = new Firebase('https://knock-knock343.firebaseio.com/');
     $scope.data = $firebaseArray(ref);
     
     var options = {
@@ -38,12 +38,12 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleLog
             console.log("Geolocation is not supported by this browser.");
         }
 
-	var mainRef = new Firebase(url);
-	var auth = $firebaseSimpleLogin(mainRef);
-	auth.$login('password', {
+//	var mainRef = new Firebase(url);
+//	var auth = $firebaseSimpleLogin(mainRef);
+//	auth.$login('password', {
 	
 
-    };
+  //  };
 
     //Checks both password fields and if they match each other
     //Returns true if match, false if different
