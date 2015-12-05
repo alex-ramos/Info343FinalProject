@@ -81,8 +81,6 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleLog
         document.location.href = newUrl;
     };
 
-<<<<<<< caae8a2268cc992f21ccf1df3ecacfdca86abdd7
-<<<<<<< ee885b6d8b4d67ec4f7d96a7d1dd4da4d3e749ba
 }]);
 ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleLogin',  function($scope, $firebaseArray, $firebaseSimpleLogin) {
 	var ref = new Firebase("");
@@ -99,10 +97,8 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleL
             $scope.newChirp = '';
         })
     }
-=======
-=======
+
     //Takes in 2 sets of lats and longs and returns their distance in meters
->>>>>>> merges branches, fixes variable names, adds comments
     $scope.calcDistance = function(lat1, lon1, lat2, lon2){
         var R = 6371000; // metres
         var phi1 = lat1.toRadians();
@@ -120,6 +116,5 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleL
     }
 
 
->>>>>>> adds calcDistance function
 }]);
 
