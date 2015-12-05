@@ -84,8 +84,11 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleLog
         document.location.href = newUrl;
     };
 
-    
-    /* Write an accessible (on scope) chirp() function to save a tweet */
+}]);
+ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleLogin',  function($scope, $firebaseArray, $firebaseSimpleLogin) {
+	var ref = new Firebase("");
+    $scope.data = $firebaseArray(ref);
+	/* Write an accessible (on scope) chirp() function to save a tweet */
     $scope.message = function() {
         $scope.chirps.$add({
             text: $scope.newMessage,
