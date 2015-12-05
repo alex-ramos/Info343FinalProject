@@ -68,16 +68,14 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleLog
     	$('input').val = 0;
     };
 
-
-
+    //Changes page to the SignIn html page
     $scope.signIn = function(){
         var newUrl = "signin.html";
         document.location.href = newUrl;
 
     };
 
-
-
+    //Changes page to the SignUp html page
     $scope.newUser = function(){
         var newUrl = "signup.html";
         document.location.href = newUrl;
@@ -99,4 +97,24 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleL
             $scope.newChirp = '';
         })
     }
+
+    //Takes in 2 sets of lats and longs and returns their distance in meters
+    $scope.calcDistance = function(lat1, lon1, lat2, lon2){
+        var R = 6371000; // metres
+        var phi1 = lat1.toRadians();
+        var phi2 = lat2.toRadians();
+        var dp = (lat2-lat1).toRadians();
+        var dl = (lon2-lon1).toRadians();
+
+        var a = Math.sin(dp/2) * Math.sin(dp/2) +
+                Math.cos(phi1) * Math.cos(phi2) *
+                Math.sin(dl/2) * Math.sin(dl/2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+        var d = R * c;
+        return d;
+    }
+
+
 }]);
+
