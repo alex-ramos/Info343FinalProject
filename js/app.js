@@ -68,19 +68,20 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleLog
     	$('input').val = 0;
     };
 
-
-
+    //Changes page to the SignIn html page
     $scope.signIn = function(){
         var newUrl = "signin.html";
         document.location.href = newUrl;
 
     };
 
+    //Changes page to the SignUp html page
     $scope.newUser = function(){
         var newUrl = "signup.html";
         document.location.href = newUrl;
     };
 
+<<<<<<< caae8a2268cc992f21ccf1df3ecacfdca86abdd7
 <<<<<<< ee885b6d8b4d67ec4f7d96a7d1dd4da4d3e749ba
 }]);
 ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleLogin',  function($scope, $firebaseArray, $firebaseSimpleLogin) {
@@ -99,16 +100,19 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleL
         })
     }
 =======
+=======
+    //Takes in 2 sets of lats and longs and returns their distance in meters
+>>>>>>> merges branches, fixes variable names, adds comments
     $scope.calcDistance = function(lat1, lon1, lat2, lon2){
         var R = 6371000; // metres
-        var φ1 = lat1.toRadians();
-        var φ2 = lat2.toRadians();
-        var Δφ = (lat2-lat1).toRadians();
-        var Δλ = (lon2-lon1).toRadians();
+        var phi1 = lat1.toRadians();
+        var phi2 = lat2.toRadians();
+        var dp = (lat2-lat1).toRadians();
+        var dl = (lon2-lon1).toRadians();
 
-        var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-                Math.cos(φ1) * Math.cos(φ2) *
-                Math.sin(Δλ/2) * Math.sin(Δλ/2);
+        var a = Math.sin(dp/2) * Math.sin(dp/2) +
+                Math.cos(phi1) * Math.cos(phi2) *
+                Math.sin(dl/2) * Math.sin(dl/2);
         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
         var d = R * c;
