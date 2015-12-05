@@ -30,6 +30,7 @@ ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
 
     // function to submit the form after all validation has occurred            
     $scope.submitForm = function(isValid) {
+        console.log("click");
     	// check to make sure the form is completely valid
         if(navigator.geolocation) {
            $scope.loc = navigator.geolocation.getCurrentPosition(success, error, options);
@@ -82,16 +83,14 @@ ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
     };
 
 }]);
-ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleLogin',  function($scope, $firebaseArray, $firebaseSimpleLogin) {
-	var ref = new Firebase("");
-    $scope.data = $firebaseArray(ref);
+ChatApp.controller('MessageCtrl', ['$scope', function($scope) {
+	
 	/* Write an accessible (on scope) chirp() function to save a tweet */
     $scope.message = function() {
         $scope.chirps.$add({
             text: $scope.newMessage,
             userId: -1,
             likes: 0,
-            time:Firebase.ServerValue.TIMESTAMP
         })
         .then(function(){
             $scope.newChirp = '';
