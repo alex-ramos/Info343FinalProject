@@ -40,10 +40,9 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleLog
 
 //	var mainRef = new Firebase(url);
 //	var auth = $firebaseSimpleLogin(mainRef);
-//	auth.$login('password', {
+//	auth.$login('password',
 	
-
-  //  };
+ };
 
     //Checks both password fields and if they match each other
     //Returns true if match, false if different
