@@ -76,13 +76,12 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleLog
 
     };
 
-
-
     $scope.newUser = function(){
         var newUrl = "signup.html";
         document.location.href = newUrl;
     };
 
+<<<<<<< ee885b6d8b4d67ec4f7d96a7d1dd4da4d3e749ba
 }]);
 ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleLogin',  function($scope, $firebaseArray, $firebaseSimpleLogin) {
 	var ref = new Firebase("");
@@ -99,4 +98,24 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleL
             $scope.newChirp = '';
         })
     }
+=======
+    $scope.calcDistance = function(lat1, lon1, lat2, lon2){
+        var R = 6371000; // metres
+        var φ1 = lat1.toRadians();
+        var φ2 = lat2.toRadians();
+        var Δφ = (lat2-lat1).toRadians();
+        var Δλ = (lon2-lon1).toRadians();
+
+        var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ/2) * Math.sin(Δλ/2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+        var d = R * c;
+        return d;
+    }
+
+
+>>>>>>> adds calcDistance function
 }]);
+
