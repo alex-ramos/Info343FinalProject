@@ -82,6 +82,7 @@ ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
     };
 
     //Changes page to the SignUp html page
+
     $scope.newUser = function(){
         var newUrl = "partials/signup.html";
         document.location.href = newUrl;
@@ -131,4 +132,3 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
 
 
 }]);
-
