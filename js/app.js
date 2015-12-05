@@ -5,8 +5,8 @@ var ChatApp = angular.module('ChatApp', ['ngMessages', 'firebase']);
 
 // create angular controller
 ChatApp.controller('LoginCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleLogin',  function($scope, $firebaseArray, $firebaseSimpleLogin) {
-    var ref = new Firebase('https://knock-knock343.firebaseio.com/');
-    $scope.data = $firebaseArray(ref);
+    //var ref = new Firebase('https://knock-knock343.firebaseio.com/');
+    //$scope.data = $firebaseArray(ref);
     
     var options = {
       enableHighAccuracy: true,
