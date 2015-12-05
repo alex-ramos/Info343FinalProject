@@ -1,11 +1,13 @@
 //
 'use strict';
 // create angular app
-var validation = angular.module('ChatApp', ['ngMessages']);
+var ChatApp = angular.module('ChatApp', ['ngMessages', 'firebase']);
 
 // create angular controller
-validation.controller('ChatCtrl', ["$scope", function($scope) {
-
+ChatApp.controller('LoginCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleLogin',  function($scope, $firebaseArray, $firebaseSimpleLogin) {
+    var ref = new Firebase("");
+    $scope.data = $firebaseArray(ref);
+    
     var options = {
       enableHighAccuracy: true,
       timeout: Infinity,
@@ -35,6 +37,12 @@ validation.controller('ChatCtrl', ["$scope", function($scope) {
         } else {
             console.log("Geolocation is not supported by this browser.");
         }
+
+	var mainRef = new Firebase(url);
+	var auth = $firebaseSimpleLogin(mainRef);
+	auth.$login('password', {
+	
+
     };
 
     //Checks both password fields and if they match each other
