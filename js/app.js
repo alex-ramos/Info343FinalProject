@@ -83,4 +83,18 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleLog
         var newUrl = "signup.html";
         document.location.href = newUrl;
     };
+
+    
+    /* Write an accessible (on scope) chirp() function to save a tweet */
+    $scope.message = function() {
+        $scope.chirps.$add({
+            text: $scope.newMessage,
+            userId: -1,
+            likes: 0,
+            time:Firebase.ServerValue.TIMESTAMP
+        })
+        .then(function(){
+            $scope.newChirp = '';
+        })
+    }
 }]);
