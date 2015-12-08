@@ -58,11 +58,17 @@ ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
     	}
     }
     //Function to set the validation for the password fields
-    $scope.checkFormPass = function(){
+    $scope.checkFormPassSU = function(){
     	var valid = $scope.confirmPassword();
     	$scope.chatForm.password.$setValidity("password", valid);
     	$scope.chatForm.cPassw.$setValidity("cPassw", valid);
     };
+
+    $scope.checkFormPassSI = function(){
+        //checks Firebase to make sure password matches one stored 
+        $scope.chatForm.password.$setValidity("password", valid);
+    };
+
     //resets all fields
     $scope.reset = function(){
     	$('input').val = 0;
@@ -70,14 +76,14 @@ ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
 
     //Changes page to the SignIn html page
     $scope.signIn = function(){
-        var newUrl = "signin.html";
+        var newUrl = "partials/signin.html";
         document.location.href = newUrl;
 
     };
 
     //Changes page to the SignUp html page
     $scope.newUser = function(){
-        var newUrl = "signup.html";
+        var newUrl = "partials/signup.html";
         document.location.href = newUrl;
     };
 
