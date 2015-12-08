@@ -9,12 +9,12 @@
 		<meta name="author" content="Eric Berner">
 		<meta name="author" content="Sukhman Tiwana">
 
-		<title>_______TITLE_______</title>
+		<title>Knock-Knock</title>
 
 		<!-- bootstrap -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
 		<link rel="stylesheet" href="css/main.css"/>
-
+		
 		<!-- include libraries -->
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
 
@@ -25,15 +25,16 @@
 
 		<script src="js/app.js"></script>
 
-		<link rel="icon" href="_______ICON_______"/>
+		<!-- page icon -->
+		<link rel="icon" href="img/icon.png"/>
 	</head>
 
 	<body  class="container" ng-app="ChatApp" ng-controller="MessageCtrl as main">
 		<form name="chatForm" id="chatForm" novalidate>
-			<h1>____HEADER_____</h1>	
+			<h1>Sign In</h1>	
 			<!-- EMAIL -->
 			<div class="form-group" ng-class="{ 'has-error': chatForm.username.$touched && chatForm.username.$invalid }">
-				<label>Email</label>
+				<label>Username</label>
 				<input type="username" name="username" placeholder="Username" class="form-control" ng-model="main.username" required>
 				<div class="help-block" ng-messages="chatForm.username.$error" ng-if="chatForm.username.$touched">
 					<p ng-message="required">Your username address is required.</p>
