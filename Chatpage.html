@@ -9,7 +9,7 @@
 		<meta name="author" content="Eric Berner">
 		<meta name="author" content="Sukhman Tiwana">
 
-		<title>Knock-Knock</title>
+		<title>Knock Knock</title>
 
 		<!-- bootstrap -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
@@ -18,6 +18,8 @@
 		<!-- include libraries -->
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
 		<script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+		<script src="https://cdn.firebase.com/libs/angularfire/1.1.3/angularfire.min.js"></script>
+
 		<!-- load ngmessages -->
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-messages.js"></script>
 		<!-- load JQuery -->
@@ -31,11 +33,20 @@
 	</head>
 
 	<body  class="container" ng-app="ChatApp" ng-controller="MessageCtrl as main">
-		<form name="chatForm" id="chatForm" novalidate>
+		<ul>
+			<li ng-repeat="message in messages">
+				<!-- edit a message -->
+				<input ng-model="message.text" ng-change="messages.$save(message)" />
+				<!-- delete a message -->
+				<button ng-click="messages.$remove(message)">Delete Message</button>
+			</li>
+		</ul>
+	
+		<form name="chatForm" id="chatForm" ng-submit="addMessage()" novalidate>
 			<textarea placeholder="What's on your mind?" name="text" class="form-control" ng-model="newMessage" required></textarea>
 			
 			<div class="form-group send-tweet">
-				<button type="submit" class="btn btn-primary" ng-click="calcDistance(47.654663199999995, -122.3082465, 47.6567, -122.3103)" ng-disabled="chatForm.$invalid">
+				<button type="submit" class="btn btn-primary" ng-disabled="chatForm.$invalid">
 					<i class="fa fa-pencil-square-o"></i> Share
 				</button>
 			</div>

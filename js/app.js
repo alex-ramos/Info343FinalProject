@@ -1,7 +1,6 @@
-//
 'use strict';
 // create angular app
-var ChatApp = angular.module('ChatApp', ['ngMessages']);
+var ChatApp = angular.module('ChatApp', ['ngMessages', 'firebase']);
 
 // create angular controller
 ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
@@ -83,8 +82,14 @@ ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
     };
 
 }]);
-ChatApp.controller('MessageCtrl', ['$scope', function($scope) {
-
+ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, $firebaseArray) {
+    var ref = new Firebase("https://knock-knock343.firebaseio.com");
+    $scope.messages = $firebaseArray(ref);
+    $scope.addMessage = function(){
+	$scope.messages.$add({
+		text: $scope.newMessage
+	});
+    };	
     Number.prototype.toRad = function() {
         return this * Math.PI / 180;
     }
