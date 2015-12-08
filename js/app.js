@@ -15,7 +15,7 @@ ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
 
     function success(pos) {
       var crd = pos.coords;
-
+        //Fix after firebase is set up
       console.log('Your current position is:');
       console.log('Latitude : ' + crd.latitude);
       console.log('Longitude: ' + crd.longitude);
@@ -26,23 +26,31 @@ ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
       console.warn('ERROR(' + err.code + '): ' + err.message);
     };
 
-
-    // function to submit the form after all validation has occurred            
-    $scope.submitForm = function(isValid) {
-        console.log("click");
-    	// check to make sure the form is completely valid
-        if(navigator.geolocation) {
+    $scope.trackLocation = function(){
+         if(navigator.geolocation) {
            $scope.loc = navigator.geolocation.getCurrentPosition(success, error, options);
-           console.log($scope.loc);
         } else {
             console.log("Geolocation is not supported by this browser.");
         }
+    }
 
-//	var mainRef = new Firebase(url);
-//	var auth = $firebaseSimpleLogin(mainRef);
-//	auth.$login('password',
-	
- };
+
+    // function to submit the form after all validation has occurred            
+    $scope.submitForm = function(isValid) {
+    	// check to make sure the form is completely valid
+       
+        $scope.toUserPage();
+
+        //	var mainRef = new Firebase(url);
+        //	var auth = $firebaseSimpleLogin(mainRef);
+        //	auth.$login('password',	
+    };
+
+    $scope.toUserPage = function(){
+        var newUrl = "userlist.html";
+        document.location.href = newUrl;
+
+    }
 
     //Checks both password fields and if they match each other
     //Returns true if match, false if different
@@ -66,6 +74,7 @@ ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
 
     $scope.checkFormPassSI = function(){
         //checks Firebase to make sure password matches one stored 
+        var valid = true;
         $scope.chatForm.password.$setValidity("password", valid);
     };
 
@@ -127,8 +136,14 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
         var d = R * c;
+        //Fix after firebase is set up
         console.log(d);
     }
 
 
 }]);
+<<<<<<< 4706ed8b5565b48830860310c92071b8f93b6f1f
+=======
+
+
+>>>>>>> fixes signIn and signUp page bugs and now routes to correct pages
