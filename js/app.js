@@ -77,14 +77,14 @@ ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
 
     //Changes page to the SignIn html page
     $scope.signIn = function(){
-        var newUrl = "signin.html";
+        var newUrl = "partials/signin.html";
         document.location.href = newUrl;
 
     };
 
     //Changes page to the SignUp html page
     $scope.newUser = function(){
-        var newUrl = "signup.html";
+        var newUrl = "partials/signup.html";
         document.location.href = newUrl;
     };
 
