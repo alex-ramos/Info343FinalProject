@@ -30,6 +30,7 @@ ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
 
     // function to submit the form after all validation has occurred            
     $scope.submitForm = function(isValid) {
+        console.log("click");
     	// check to make sure the form is completely valid
         if(navigator.geolocation) {
            $scope.loc = navigator.geolocation.getCurrentPosition(success, error, options);
@@ -82,16 +83,18 @@ ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
     };
 
 }]);
-ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleLogin',  function($scope, $firebaseArray, $firebaseSimpleLogin) {
-	var ref = new Firebase("");
-    $scope.data = $firebaseArray(ref);
+ChatApp.controller('MessageCtrl', ['$scope', function($scope) {
+
+    Number.prototype.toRad = function() {
+        return this * Math.PI / 180;
+    }
+	
 	/* Write an accessible (on scope) chirp() function to save a tweet */
     $scope.message = function() {
         $scope.chirps.$add({
             text: $scope.newMessage,
             userId: -1,
             likes: 0,
-            time:Firebase.ServerValue.TIMESTAMP
         })
         .then(function(){
             $scope.newChirp = '';
@@ -101,10 +104,10 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleL
     //Takes in 2 sets of lats and longs and returns their distance in meters
     $scope.calcDistance = function(lat1, lon1, lat2, lon2){
         var R = 6371000; // metres
-        var phi1 = lat1.toRadians();
-        var phi2 = lat2.toRadians();
-        var dp = (lat2-lat1).toRadians();
-        var dl = (lon2-lon1).toRadians();
+        var phi1 = lat1.toRad();
+        var phi2 = lat2.toRad();
+        var dp = (lat2-lat1).toRad();
+        var dl = (lon2-lon1).toRad();
 
         var a = Math.sin(dp/2) * Math.sin(dp/2) +
                 Math.cos(phi1) * Math.cos(phi2) *
@@ -112,7 +115,7 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseSimpleL
         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
         var d = R * c;
-        return d;
+        console.log(d);
     }
 
 
