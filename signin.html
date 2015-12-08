@@ -45,7 +45,7 @@
 			<!-- Password entries -->
 			<div class="form-group" ng-class="{ 'has-error': chatForm.password.$touched && chatForm.password.$invalid}">
 				<label>Password</label>
-				<input type="password" name="password" placeholder="Password" class="form-control" ng-model="main.password" ng-change="checkFormPass()" required>
+				<input type="password" name="password" placeholder="Password" class="form-control" ng-model="main.password" ng-change="checkFormPassSI()" required>
 				<div class="help-block" ng-messages="chatForm.password.$error" ng-if="chatForm.password.$touched">
 					<p ng-message="required">Please enter a password</p>
 				</div>

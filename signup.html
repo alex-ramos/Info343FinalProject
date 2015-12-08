@@ -53,7 +53,7 @@
 
 			<div class="form-group" ng-class="{ 'has-error': chatForm.cPassw.$touched && chatForm.cPassw.$invalid}">
 				<label>Confirm Password</label>
-				<input type="password" name="cPassw" placeholder="Confirm Password" class="form-control" ng-model="main.cPassw" ng-change="checkFormPass()"  required>
+				<input type="password" name="cPassw" placeholder="Confirm Password" class="form-control" ng-model="main.cPassw" ng-change="checkFormPassSU()"  required>
 				<div class="help-block" ng-messages="chatForm.cPassw.$error" ng-if="chatForm.cPassw.$touched">
 					<p ng-message="required">Please confirm your password</p>
 				</div>
