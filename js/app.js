@@ -78,8 +78,8 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', function($scope, $fi
 
 
     // function to submit the form after all validation has occurred            
-    $scope.submitForm = function(isValid) {
-    	// check to make sure the form is completely valid
+    $scope.login = function(isValid) {
+    	// check to make sure the form is completely valid    
 	$scope.authObj.$authWithPassword({
   		email: "jhall38@uw.edu",
   		password: $scope.main.password
