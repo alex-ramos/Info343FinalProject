@@ -45,10 +45,13 @@ ChatApp.config(function($stateProvider, $urlRouterProvider){
 
 
 // create angular controller
-ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', function($scope, $firebaseAuth) {
+ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', function($scope, $firebaseAuth, $firebaseArray) {
     var ref = new Firebase('https://knock-knock343.firebaseio.com/');
+    var usersRef = new Firebase('https://knock-knock343.firebaseio.com/users/');
+    var usernamesRef = new Firebase('https://knock-knock343.firebaseio.com/usernames/');
     $scope.authObj = $firebaseAuth(ref);
-
+    $scope.users = $firebaseArray(usersRef);
+    $scope.usernames = $firebaseArray(usernamesRef);
     var options = {
       enableHighAccuracy: true,
       timeout: Infinity,
@@ -72,7 +75,6 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', function($scope, $fi
          if(navigator.geolocation) {
            $scope.loc = navigator.geolocation.getCurrentPosition(success, error, options);
         } else {
-            console.log("Geolocation is not supported by this browser.");
         }
  };
 
@@ -81,7 +83,7 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', function($scope, $fi
     $scope.login = function(isValid) {
     	// check to make sure the form is completely valid    
 	$scope.authObj.$authWithPassword({
-  		email: "jhall38@uw.edu",
+  		email: $scope.main.email,
   		password: $scope.main.password
 	}).then(function(authData) {
         	console.log("Logged in as:", authData.uid);
@@ -89,6 +91,33 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', function($scope, $fi
   		console.error("Authentication failed:", error);
 	});   
     };
+
+    $scope.signup = function(isValid) {
+	$scope.authObj.$createUser({
+		  email: $scope.main.email,
+		  password: $scope.main.password
+	}).then(function(userData) {
+		  console.log("User " + userData.uid + " created successfully!");
+
+		    return $scope.authObj.$authWithPassword({
+			        email: $scope.main.email,
+				password: $scope.main.password
+		    });
+	}).then(function(authData) {
+    		$scope.users.$add({
+			lat: 0,
+			long: 0,
+			email: $scope.main.email,
+			username: $scope.main.username
+		    }).then(function(r){
+    			usersRef.orderByChild("username").equalTo($scope.main.username).on("child_added", function(snapshot) {
+				console.log($scope.users.$getRecord(snapshot.key()).username);
+			}); 
+	   	 });
+	}).catch(function(error) {
+		  console.error("Error: ", error);
+	});
+    }
 
     //Checks both password fields and if they match each other
     //Returns true if match, false if different
