@@ -7,7 +7,6 @@ ChatApp.config(function($stateProvider, $urlRouterProvider){
 
     $urlRouterProvider.otherwise("home");
 
-
     $stateProvider.state('home', {
         url: '/home',
         templateUrl: 'partials/titlepage.html' 
@@ -34,7 +33,6 @@ ChatApp.config(function($stateProvider, $urlRouterProvider){
  
     })
 
-
     .state('users', {
             url: '/users',
             templateUrl: 'partials/userlist.html',
@@ -48,34 +46,6 @@ ChatApp.config(function($stateProvider, $urlRouterProvider){
 ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
     //var ref = new Firebase('https://knock-knock343.firebaseio.com/');
     //$scope.data = $firebaseArray(ref);
-    
-    var options = {
-      enableHighAccuracy: true,
-      timeout: Infinity,
-      maximumAge: 0
-    };
-
-    function success(pos) {
-      var crd = pos.coords;
-        //Fix after firebase is set up
-      console.log('Your current position is:');
-      console.log('Latitude : ' + crd.latitude);
-      console.log('Longitude: ' + crd.longitude);
-      console.log('More or less ' + crd.accuracy + ' meters.');
-    };
-
-    function error(err) {
-      console.warn('ERROR(' + err.code + '): ' + err.message);
-    };
-
-    $scope.trackLocation = function(){
-         if(navigator.geolocation) {
-           $scope.loc = navigator.geolocation.getCurrentPosition(success, error, options);
-        } else {
-            console.log("Geolocation is not supported by this browser.");
-        }
-    }
-
 
     // function to submit the form after all validation has occurred            
     $scope.submitForm = function(isValid) {
@@ -113,14 +83,17 @@ ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
     };
 
 }]);
+
 ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, $firebaseArray) {
     var ref = new Firebase("https://knock-knock343.firebaseio.com");
     $scope.messages = $firebaseArray(ref);
+    
     $scope.addMessage = function(){
-	$scope.messages.$add({
-		text: $scope.newMessage
-	});
+    	$scope.messages.$add({
+    		text: $scope.newMessage
+    	});
     };	
+
     Number.prototype.toRad = function() {
         return this * Math.PI / 180;
     }
@@ -137,9 +110,31 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
         })
     }
 
-    //Takes in 2 sets of lats and longs and returns their distance in meters
-    $scope.calcDistance = function(lat1, lon1, lat2, lon2){
+    // //Takes in 2 sets of lats and longs and returns their distance in meters
+    // $scope.calcDistance = function(lat1, lon1, lat2, lon2){
+    //     var R = 6371000; // metres
+    //     var phi1 = lat1.toRad();
+    //     var phi2 = lat2.toRad();
+    //     var dp = (lat2-lat1).toRad();
+    //     var dl = (lon2-lon1).toRad();
+
+    //     var a = Math.sin(dp/2) * Math.sin(dp/2) +
+    //             Math.cos(phi1) * Math.cos(phi2) *
+    //             Math.sin(dl/2) * Math.sin(dl/2);
+    //     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+    //     var d = R * c;
+    //     //Fix after firebase is set up
+    //     console.log(d);
+    // }
+
+
+
+  //Takes in 2 sets of lats and longs and returns their distance in meters
+    $scope.calcDistance = function(lat2, lon2){
         var R = 6371000; // metres
+        var lat1 = $scope.lat;
+        var lon1 = $scope.lon;
         var phi1 = lat1.toRad();
         var phi2 = lat2.toRad();
         var dp = (lat2-lat1).toRad();
@@ -153,6 +148,40 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
         var d = R * c;
         //Fix after firebase is set up
         console.log(d);
+    }
+
+    var options = {
+      enableHighAccuracy: true,
+      timeout: Infinity,
+      maximumAge: 0
+    };
+
+    function success(pos) {
+        var crd = pos.coords;
+        //Fix after firebase is set up
+
+        console.log('Your current position is:');
+        console.log('Latitude : ' + crd.latitude);
+        console.log('Longitude: ' + crd.longitude);
+        console.log('More or less ' + crd.accuracy + ' meters.');
+        $scope.lat = crd.latitude;
+        $scope.lon = crd.longitude;
+        $scope.acc = crd.accuracy;
+
+        console.log('Scope Latitude : ' + $scope.lat);
+        console.log('Scope Longitude: ' + $scope.lon);
+    };
+
+    function error(err) {
+         console.warn('ERROR(' + err.code + '): ' + err.message);
+    };
+
+    $scope.trackLocation = function(){
+        if(navigator.geolocation) {
+           $scope.loc = navigator.geolocation.getCurrentPosition(success, error, options);
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+        }
     }
 
 }]);
