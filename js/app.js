@@ -74,8 +74,6 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', function($scope, $fi
         } else {
             console.log("Geolocation is not supported by this browser.");
         }
-<<<<<<< HEAD
-	
  };
 
 
@@ -91,7 +89,6 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', function($scope, $fi
   		console.error("Authentication failed:", error);
 	});   
     };
->>>>>>> master
 
     //Checks both password fields and if they match each other
     //Returns true if match, false if different
