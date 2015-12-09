@@ -4,10 +4,11 @@
 	<!-- EMAIL -->
 	<div class="form-group" ng-class="{ 'has-error': chatForm.username.$touched && chatForm.username.$invalid }">
 		<label>Username</label>
-		<input type="username" name="username" placeholder="Username" class="form-control" ng-model="main.username" required>
+		<input type="username" name="username" placeholder="Username" class="form-control" ng-model="main.username" ng-minlength="7" required>
 		<div class="help-block" ng-messages="chatForm.username.$error" ng-if="chatForm.username.$touched">
 			<p ng-message="required">Your username address is required.</p>
 			<p ng-message="username">Your username address is invalid.</p>
+			<p ng-message="minlength">Please type at least 7 characters for your username.</p>
 		</div>
 	</div>
 
