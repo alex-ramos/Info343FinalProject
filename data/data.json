@@ -1,0 +1,65 @@
+{
+  "global": {
+    "userCount": 2,
+    "chatCount": 1
+  },
+  "users": [
+    {
+      "username": "bobby192",
+      "favorites": [
+        "kitty969",
+        "koolboi88"
+        ],
+      "location": [
+        {
+          "long": 51.5034070,
+          "lat": -0.1275920
+        }
+      ]
+    },
+    {
+      "username": "kitty969",
+      "favorites": [
+        "bobby192",
+        "koolboi88"
+        ],
+      "location": [
+        {
+          "long": 51.5034070,
+          "lat": -0.1275920
+        }
+      ]
+    },
+    {
+      "username": "koolboi88",
+      "favorites": [
+        "bobby192"
+        ],
+      "location": [
+        {
+          "long": 51.5034070,
+          "lat": -0.1275920
+        }
+      ]
+    }
+  ],
+  
+  "chats": [
+      {
+        "id": 1,
+        "participants": [
+          "bobby192",
+          "kitty969"
+          ],
+        "messageCount": 1,
+        "messages": [
+          {
+            "id": "1",
+            "timestamp": "2014-07-12 10:54:11",
+            "author": "bobby192",
+            "message": "Hey, what's good! :)"
+          }  
+        ]
+      }
+    ]
+}
