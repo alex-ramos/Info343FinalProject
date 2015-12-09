@@ -1,6 +1,6 @@
 'use strict';
 // create angular app
-var ChatApp = angular.module('ChatApp', ['ngMessages', 'firebase']);
+var ChatApp = angular.module('ChatApp', 'firebase', ['ngMessages', 'firebase']);
 
 // create angular controller
 ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
@@ -39,17 +39,15 @@ ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
     $scope.submitForm = function(isValid) {
     	// check to make sure the form is completely valid
        
-        $scope.toUserPage();
+        $scope.toPage("../partials/userlist.html");
 
         //	var mainRef = new Firebase(url);
         //	var auth = $firebaseSimpleLogin(mainRef);
         //	auth.$login('password',	
     };
 
-    $scope.toUserPage = function(){
-        var newUrl = "userlist.html";
-        document.location.href = newUrl;
-
+    $scope.toPage = function(newPage){
+        document.location.href = newPage;   
     }
 
     //Checks both password fields and if they match each other

@@ -37,8 +37,8 @@
 			
 
 			<!--The submit button and reset button.-->
-			<a href="signin.html"><button id="reset" class="btn btn-custom" ng-click="signIn()">Sign In!</button></a>
-			<a href="signup.html"><button type="submit" class="btn btn-custom" ng-click="newUser()" ng-disabled="chatForm.$invalid" id="submitButton" value="Submit">Sign Up!</button></
+			<a href="signin.html"><button id="reset" class="btn btn-custom" ng-click="toPage('partials/signin.html')">Sign In!</button></a>
+			<a href="signup.html"><button type="submit" class="btn btn-custom" ng-click="toPage('partials/signup.html')" ng-disabled="chatForm.$invalid" id="submitButton" value="Submit">Sign Up!</button></
 
 		</form>
 	<!-- load external libraries -->
