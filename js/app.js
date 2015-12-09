@@ -1,6 +1,6 @@
 'use strict';
 // create angular app
-var ChatApp = angular.module('ChatApp', 'firebase', ['ngMessages', 'firebase']);
+var ChatApp = angular.module('ChatApp', ['ngMessages', 'firebase']);
 
 // create angular controller
 ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
@@ -79,20 +79,6 @@ ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
     //resets all fields
     $scope.reset = function(){
     	$('input').val = 0;
-    };
-
-    //Changes page to the SignIn html page
-    $scope.signIn = function(){
-        var newUrl = "partials/signin.html";
-        document.location.href = newUrl;
-
-    };
-
-    //Changes page to the SignUp html page
-
-    $scope.newUser = function(){
-        var newUrl = "partials/signup.html";
-        document.location.href = newUrl;
     };
 
 }]);
