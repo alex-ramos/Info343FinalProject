@@ -1,6 +1,48 @@
 'use strict';
 // create angular app
-var ChatApp = angular.module('ChatApp', ['ngMessages', 'firebase']);
+var ChatApp = angular.module('ChatApp', ['ngMessages', 'firebase', 'ui.router']);
+
+
+ChatApp.config(function($stateProvider, $urlRouterProvider){
+
+    $urlRouterProvider.otherwise("home");
+
+
+    $stateProvider.state('home', {
+        url: '/home',
+        templateUrl: 'partials/titlepage.html' 
+    })
+
+    .state('signIn', {
+        url: '/signIn',
+        templateUrl: 'partials/signin.html',
+        controller: 'LoginCtrl'
+ 
+    })
+
+    .state('signup', {
+            url: '/signUp',
+            templateUrl: 'partials/signup.html' ,
+            controller: 'LoginCtrl'
+
+    })
+
+    .state('chatpage', {
+            url: '/chat',
+            templateUrl: 'partials/Chatpage.html',
+            controller: 'MessageCtrl'
+ 
+    })
+
+
+    .state('users', {
+            url: '/users',
+            templateUrl: 'partials/userlist.html',
+            controller: 'MessageCtrl'
+ 
+    })
+});
+
 
 // create angular controller
 ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
@@ -39,16 +81,10 @@ ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
     $scope.submitForm = function(isValid) {
     	// check to make sure the form is completely valid
        
-        $scope.toPage("../partials/userlist.html");
-
         //	var mainRef = new Firebase(url);
         //	var auth = $firebaseSimpleLogin(mainRef);
         //	auth.$login('password',	
     };
-
-    $scope.toPage = function(newPage){
-        document.location.href = newPage;   
-    }
 
     //Checks both password fields and if they match each other
     //Returns true if match, false if different
@@ -74,11 +110,6 @@ ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
         //checks Firebase to make sure password matches one stored 
         var valid = true;
         $scope.chatForm.password.$setValidity("password", valid);
-    };
-
-    //resets all fields
-    $scope.reset = function(){
-    	$('input').val = 0;
     };
 
 }]);
@@ -125,4 +156,5 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
     }
 
 }]);
+
 
