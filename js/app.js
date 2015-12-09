@@ -138,10 +138,5 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
         console.log(d);
     }
 
-
 }]);
-<<<<<<< 4706ed8b5565b48830860310c92071b8f93b6f1f
-=======
 
-
->>>>>>> fixes signIn and signUp page bugs and now routes to correct pages
