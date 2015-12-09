@@ -1,7 +1,15 @@
-
 <form name="chatForm" id="chatForm" novalidate>
-	<h1>Sign Up</h1>	
+	<h1>Sign Up</h1>
 	<!-- EMAIL -->
+	<div class="form-group" ng-class="{ 'has-error': chatForm.email.$touched && chatForm.email.$invalid }">
+		<label>Email</label>
+		<input type="email" name="email" placeholder="Email Address" class="form-control" ng-model="main.email" required>
+		<div class="help-block" ng-messages="chatForm.email.$error" ng-if="chatForm.email.$touched">
+			<p ng-message="required">Your email address is required.</p>
+			<p ng-message="email">Your email address is invalid.</p>
+		</div>
+	</div>	
+	<!-- Username -->
 	<div class="form-group" ng-class="{ 'has-error': chatForm.username.$touched && chatForm.username.$invalid }">
 		<label>Username</label>
 		<input type="username" name="username" placeholder="Username" class="form-control" ng-model="main.username" ng-minlength="7" required>
