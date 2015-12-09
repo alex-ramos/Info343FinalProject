@@ -3,10 +3,10 @@
 var ChatApp = angular.module('ChatApp', ['ngMessages', 'firebase']);
 
 // create angular controller
-ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
-    //var ref = new Firebase('https://knock-knock343.firebaseio.com/');
-    //$scope.data = $firebaseArray(ref);
-    
+ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', function($scope, $firebaseAuth) {
+    var ref = new Firebase('https://knock-knock343.firebaseio.com/');
+    $scope.authObj = $firebaseAuth(ref);
+
     var options = {
       enableHighAccuracy: true,
       timeout: Infinity,
@@ -37,10 +37,14 @@ ChatApp.controller('LoginCtrl', ['$scope',  function($scope) {
         } else {
             console.log("Geolocation is not supported by this browser.");
         }
-
-//	var mainRef = new Firebase(url);
-//	var auth = $firebaseSimpleLogin(mainRef);
-//	auth.$login('password',
+	$scope.authObj.$authWithPassword({
+  		email: "jhall38@uw.edu",
+  		password: $scope.main.password
+	}).then(function(authData) {
+        	console.log("Logged in as:", authData.uid);
+	}).catch(function(error) {
+  		console.error("Authentication failed:", error);
+	});  
 	
  };
 
