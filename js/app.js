@@ -1,6 +1,48 @@
 'use strict';
 // create angular app
-var ChatApp = angular.module('ChatApp', ['ngMessages', 'firebase']);
+var ChatApp = angular.module('ChatApp', ['ngMessages', 'firebase', 'ui.router']);
+
+
+ChatApp.config(function($stateProvider, $urlRouterProvider){
+
+    $urlRouterProvider.otherwise("home");
+
+
+    $stateProvider.state('home', {
+        url: '/home',
+        templateUrl: 'partials/titlepage.html' 
+    })
+
+    .state('signIn', {
+        url: '/signIn',
+        templateUrl: 'partials/signin.html',
+        controller: 'LoginCtrl'
+ 
+    })
+
+    .state('signup', {
+            url: '/signUp',
+            templateUrl: 'partials/signup.html' ,
+            controller: 'LoginCtrl'
+
+    })
+
+    .state('chatpage', {
+            url: '/chat',
+            templateUrl: 'partials/Chatpage.html',
+            controller: 'MessageCtrl'
+ 
+    })
+
+
+    .state('users', {
+            url: '/users',
+            templateUrl: 'partials/userlist.html',
+            controller: 'MessageCtrl'
+ 
+    })
+});
+
 
 // create angular controller
 ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', function($scope, $firebaseAuth) {
@@ -15,7 +57,7 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', function($scope, $fi
 
     function success(pos) {
       var crd = pos.coords;
-
+        //Fix after firebase is set up
       console.log('Your current position is:');
       console.log('Latitude : ' + crd.latitude);
       console.log('Longitude: ' + crd.longitude);
@@ -26,17 +68,20 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', function($scope, $fi
       console.warn('ERROR(' + err.code + '): ' + err.message);
     };
 
-
-    // function to submit the form after all validation has occurred            
-    $scope.submitForm = function(isValid) {
-        console.log("click");
-    	// check to make sure the form is completely valid
-        if(navigator.geolocation) {
+    $scope.trackLocation = function(){
+         if(navigator.geolocation) {
            $scope.loc = navigator.geolocation.getCurrentPosition(success, error, options);
-           console.log($scope.loc);
         } else {
             console.log("Geolocation is not supported by this browser.");
         }
+<<<<<<< HEAD
+	
+ };
+
+
+    // function to submit the form after all validation has occurred            
+    $scope.submitForm = function(isValid) {
+    	// check to make sure the form is completely valid
 	$scope.authObj.$authWithPassword({
   		email: "jhall38@uw.edu",
   		password: $scope.main.password
@@ -44,9 +89,9 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', function($scope, $fi
         	console.log("Logged in as:", authData.uid);
 	}).catch(function(error) {
   		console.error("Authentication failed:", error);
-	});  
-	
- };
+	});   
+    };
+>>>>>>> master
 
     //Checks both password fields and if they match each other
     //Returns true if match, false if different
@@ -70,25 +115,8 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', function($scope, $fi
 
     $scope.checkFormPassSI = function(){
         //checks Firebase to make sure password matches one stored 
+        var valid = true;
         $scope.chatForm.password.$setValidity("password", valid);
-    };
-
-    //resets all fields
-    $scope.reset = function(){
-    	$('input').val = 0;
-    };
-
-    //Changes page to the SignIn html page
-    $scope.signIn = function(){
-        var newUrl = "partials/signin.html";
-        document.location.href = newUrl;
-
-    };
-
-    //Changes page to the SignUp html page
-    $scope.newUser = function(){
-        var newUrl = "partials/signup.html";
-        document.location.href = newUrl;
     };
 
 }]);
@@ -130,9 +158,10 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
         var d = R * c;
+        //Fix after firebase is set up
         console.log(d);
     }
 
-
 }]);
+
 
