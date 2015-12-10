@@ -2,10 +2,11 @@
 	<!--ADD Usernames from Firebase-->
 	<p> logged in as {{ user.username }} </p>
 	<ul ng-repeat="user in nearbyUsers">
-		<li> {{ user.username }} </li>
+		<li> {{ user.username}}     {{calcDistance(user.lat, user.long) | number:0}} </li>
+
 		<a href="#/chat"><button type="submit" class="btn btn-custom" id="chatButton" value="Submit">Chat</button></a>
 	</ul>
-<button class="btn btn-success" ng-click="getNearbyUsers()" id="test" value="test">TEST</button>
+	<button class="btn btn-success" ng-click="getNearbyUsers()" id="refresh" value="refresh">Refresh Users</button>
 </form>
 
 

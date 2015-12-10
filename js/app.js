@@ -176,12 +176,14 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
         for(var i = 0; i < users.length; i++){
             var distance = $scope.calcDistance(Number.parseFloat(users[i].lat), Number.parseFloat(users[i].long));
             if(distance > 0 && distance < 100){
-                distances[users[i]] = distance;
+                distances.push(users[i]);
             }
         }
 
-        $scope.distance = distances;
+        $scope.nearbyUsers = distances;
+        console.log($scope.nearbyUsers);
     };
+
 
 
     $scope.messages = $firebaseArray(ref);
@@ -263,7 +265,7 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
         }
     }
 
-    console.log($scope.nearbyUsers);
+
     var selectChat = function(){
     	//gets the chat
 	var chatRef = new Firebase('https://knock-knock343.firebaseio.com/chats/chat1'); 
@@ -272,7 +274,5 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
     selectChat();
    
     
-
-
 
 }]);
