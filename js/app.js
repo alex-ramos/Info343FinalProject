@@ -78,16 +78,17 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', fu
     // function to submit the form after all validation has occurred            
     $scope.login = function(isValid) {
     	var email = "";
+	$scope.session = null;
 	usersRef.orderByChild("username").equalTo($scope.main.username).on("child_added", function(snapshot) {
         	email = $scope.users.$getRecord(snapshot.key()).email;
-		console.log(email);
 	});
 
 	$scope.authObj.$authWithPassword({
   		email: email,
   		password: $scope.main.password
 	}).then(function(authData) {
-        	console.log("Logged in as:", authData.uid);
+        	$scope.session = authData;
+		
 	}).catch(function(error) {
   		console.error("Authentication failed:", error);
 	});   
@@ -113,6 +114,7 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', fu
 		    }).then(function(r){
     			usersRef.orderByChild("username").equalTo($scope.main.username).on("child_added", function(snapshot) {
 				console.log($scope.users.$getRecord(snapshot.key()).username);
+				$scope.login();
 			}); 
 	   	 });
 	}).catch(function(error) {
@@ -150,8 +152,21 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', fu
 
 ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, $firebaseArray) {
     var ref = new Firebase("https://knock-knock343.firebaseio.com");
+    var usersRef = new Firebase('https://knock-knock343.firebaseio.com/users/'); 
+    $scope.session = ref.getAuth();
+    var getUser = function(){
+	var user = null;
+        usersRef.orderByChild("email").equalTo($scope.session.password.email).on("child_added", function(snapshot) {
+                user = $scope.users.$getRecord(snapshot.key());
+        });
+	return user;
+    };
+    $scope.user = getUser();
+    var getNearbyUsers = function (){};
+
+
+    console.log($scope.user);
     $scope.messages = $firebaseArray(ref);
-    
     $scope.addMessage = function(){
     	$scope.messages.$add({
     		text: $scope.newMessage
@@ -173,6 +188,8 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
             $scope.newChirp = '';
         })
     }
+
+
 
     // //Takes in 2 sets of lats and longs and returns their distance in meters
     // $scope.calcDistance = function(lat1, lon1, lat2, lon2){
