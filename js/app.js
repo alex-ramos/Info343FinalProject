@@ -47,75 +47,71 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', fu
     $scope.users = $firebaseArray(usersRef);
     $scope.usernames = $firebaseArray(usernamesRef);
     var options = {
-      enableHighAccuracy: true,
-      timeout: Infinity,
-      maximumAge: 0
+       enableHighAccuracy: true,
+       timeout: Infinity,
+       maximumAge: 0
     };
 
     function success(pos) {
-      var crd = pos.coords;
-        //Fix after firebase is set up
-      console.log('Your current position is:');
-      console.log('Latitude : ' + crd.latitude);
-      console.log('Longitude: ' + crd.longitude);
-      console.log('More or less ' + crd.accuracy + ' meters.');
+        var crd = pos.coords;
+        $scope.lat = Number.parseFloat(crd.latitude);
+        $scope.lon = Number.parseFloat(crd.longitude);
     };
 
     function error(err) {
       console.warn('ERROR(' + err.code + '): ' + err.message);
     };
-
-    $scope.trackLocation = function(){
-         if(navigator.geolocation) {
-           $scope.loc = navigator.geolocation.getCurrentPosition(success, error, options);
-        } else {
-        }
- };
-    // function to submit the form after all validation has occurred            
+          
     $scope.login = function(isValid) {
     	var email = "";
-	$scope.session = null;
-	usersRef.orderByChild("username").equalTo($scope.main.username).on("child_added", function(snapshot) {
-        	email = $scope.users.$getRecord(snapshot.key()).email;
-	});
+	   $scope.session = null;
+	   usersRef.orderByChild("username").equalTo($scope.main.username).on("child_added", function(snapshot) {
+            	email = $scope.users.$getRecord(snapshot.key()).email;
+    	});
 
-	$scope.authObj.$authWithPassword({
-  		email: email,
-  		password: $scope.main.password
-	}).then(function(authData) {
-        	$scope.session = authData;
-		
-	}).catch(function(error) {
-  		console.error("Authentication failed:", error);
-	});   
+    	$scope.authObj.$authWithPassword({
+      		email: email,
+      		password: $scope.main.password
+    	}).then(function(authData) {
+            	$scope.session = authData;
+    		
+    	}).catch(function(error) {
+      		console.error("Authentication failed:", error);
+	   });   
     };
 
     $scope.signup = function(isValid) {
-	$scope.authObj.$createUser({
-		  email: $scope.main.email,
-		  password: $scope.main.password
-	}).then(function(userData) {
-		  console.log("User " + userData.uid + " created successfully!");
+        if(navigator.geolocation) {
+             $scope.login.loc = navigator.geolocation.getCurrentPosition(success, error, options);
+        } else {
 
-		    return $scope.authObj.$authWithPassword({
-			        email: $scope.main.email,
-				password: $scope.main.password
-		    });
-	}).then(function(authData) {
-    		$scope.users.$add({
-			lat: 0,
-			long: 0,
-			email: $scope.main.email,
-			username: $scope.main.username
-		    }).then(function(r){
-    			usersRef.orderByChild("username").equalTo($scope.main.username).on("child_added", function(snapshot) {
-				console.log($scope.users.$getRecord(snapshot.key()).username);
-				$scope.login();
-			}); 
-	   	 });
-	}).catch(function(error) {
-		  console.error("Error: ", error);
-	});
+        }
+
+    	$scope.authObj.$createUser({
+    		  email: $scope.main.email,
+    		  password: $scope.main.password
+    	}).then(function(userData) {
+    		  console.log("User " + userData.uid + " created successfully!");
+
+    		    return $scope.authObj.$authWithPassword({
+    			        email: $scope.main.email,
+    				password: $scope.main.password
+    		    });
+    	}).then(function(authData) {
+        		$scope.users.$add({
+    			lat: $scope.lat,
+    			long: $scope.lon,
+    			email: $scope.main.email,
+    			username: $scope.main.username
+    		    }).then(function(r){
+        			usersRef.orderByChild("username").equalTo($scope.main.username).on("child_added", function(snapshot) {
+    				console.log($scope.users.$getRecord(snapshot.key()).username);
+    				$scope.login();
+    			}); 
+    	   	 });
+    	}).catch(function(error) {
+    		  console.error("Error: ", error);
+    	});
     }
 
     //Checks both password fields and if they match each other
@@ -158,15 +154,23 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
 	return user;
     };
     $scope.user = getUser();
-    var getNearbyUsers = function (){};
+
+
+
+
+    $scope.getNearbyUsers = function (){
+
+    }
+
+
+
+
+    ;
 
 
     console.log($scope.user);
     $scope.messages = $firebaseArray(ref);
-<<<<<<< 84c9425999901e365d4cca7e0b8a4bac81d688fd
-=======
 
->>>>>>> Bug fixes
     $scope.addMessage = function(){
     	$scope.messages.$add({
     		text: $scope.newMessage
@@ -189,28 +193,6 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
         })
     }
 
-
-
-    // //Takes in 2 sets of lats and longs and returns their distance in meters
-    // $scope.calcDistance = function(lat1, lon1, lat2, lon2){
-    //     var R = 6371000; // metres
-    //     var phi1 = lat1.toRad();
-    //     var phi2 = lat2.toRad();
-    //     var dp = (lat2-lat1).toRad();
-    //     var dl = (lon2-lon1).toRad();
-
-    //     var a = Math.sin(dp/2) * Math.sin(dp/2) +
-    //             Math.cos(phi1) * Math.cos(phi2) *
-    //             Math.sin(dl/2) * Math.sin(dl/2);
-    //     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
-    //     var d = R * c;
-    //     //Fix after firebase is set up
-    //     console.log(d);
-    // }
-
-
-
   //Takes in 2 sets of lats and longs and returns their distance in meters
     $scope.calcDistance = function(lat2, lon2){
         var R = 6371000; // metres
@@ -231,13 +213,13 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
         console.log(d);
     }
 
-    var options = {
+    var options2 = {
       enableHighAccuracy: true,
       timeout: Infinity,
       maximumAge: 0
     };
 
-    function success(pos) {
+    function success2(pos) {
         var crd = pos.coords;
         //Fix after firebase is set up
 
@@ -253,13 +235,13 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
         console.log('Scope Longitude: ' + $scope.lon);
     };
 
-    function error(err) {
+    function error2(err) {
          console.warn('ERROR(' + err.code + '): ' + err.message);
     };
 
     $scope.trackLocation = function(){
         if(navigator.geolocation) {
-           $scope.loc = navigator.geolocation.getCurrentPosition(success, error, options);
+           $scope.loc = navigator.geolocation.getCurrentPosition(success2, error2, options2);
         } else {
             console.log("Geolocation is not supported by this browser.");
         }
