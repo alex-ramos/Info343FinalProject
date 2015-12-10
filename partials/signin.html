@@ -1,9 +1,11 @@
-<form name="chatForm" id="chatForm" novalidate>
+<form name="chatForm" class="form-horizontal" id="chatForm" novalidate>
 	<h1>Sign In</h1>	
 	<!-- Username -->
 	<div class="form-group" ng-class="{ 'has-error': chatForm.username.$touched && chatForm.username.$invalid }">
-		<label>Username</label>
-		<input type="username" name="username" placeholder="Username" class="form-control" ng-model="main.username" required>
+		<label class="col-sm-2 control-label">Username</label>
+		<div class="col-sm-10">
+			<input type="username" name="username" placeholder="Username" class="form-control" ng-model="main.username" required>
+		</div>
 		<div class="help-block" ng-messages="chatForm.username.$error" ng-if="chatForm.username.$touched">
 			<p ng-message="required">Your username address is required.</p>
 			<p ng-message="username">Your username address is invalid.</p>
@@ -12,14 +14,18 @@
 
 	<!-- Password entries -->
 	<div class="form-group" ng-class="{ 'has-error': chatForm.password.$touched && chatForm.password.$invalid}">
-		<label>Password</label>
-		<input type="password" name="password" placeholder="Password" class="form-control" ng-model="main.password" ng-change="checkFormPassSI()" required>
+		<label class="col-sm-2 control-label">Password</label>
+		<div class="col-sm-10">
+			<input type="password" name="password" placeholder="Password" class="form-control" ng-model="main.password" ng-change="checkFormPassSI()" required>
+		</div>
 		<div class="help-block" ng-messages="chatForm.password.$error" ng-if="chatForm.password.$touched">
 			<p ng-message="required">Please enter a password</p>
 		</div>
 	</div>
 
 	<!--The submit button and reset button.-->
-	<a href="#/users"><button type="submit" class="btn btn-success" ng-click="login(chatForm.$valid)" id="submitButton" value="Submit">Sign In!</button></a>
+	<div class="form-group">
+		<a href="#/users"><button type="submit" class="btn btn-custom" ng-click="submitForm(chatForm.$valid)" id="submitButton" value="Submit">Sign In!</button></a>
+	</div>
 
 </form>

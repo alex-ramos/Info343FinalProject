@@ -1,3 +1,5 @@
+<h1>Chat</h1>
+
 <ul>
 	<li ng-repeat="message in messages">
 		<!-- edit a message -->
@@ -11,9 +13,9 @@
 	<textarea placeholder="What's on your mind?" name="text" class="form-control" ng-model="newMessage" required></textarea>
 	<!--ADD Usernames from Firebase-->
 	<div class="form-group send-tweet">
-		<button type="submit" class="btn btn-primary" ng-disabled="chatForm.$invalid">
+		<button type="submit" class="btn btn-custom" ng-disabled="chatForm.$invalid">
 		<!-- TEST CODE: FIX BEFORE TURINING IN -->
-		<button type="submit" class="btn btn-primary" ng-click="calcDistance(47.654663199999995, -122.3082465, 47.6567, -122.3103)" ng-disabled="chatForm.$invalid">
+		<button type="submit" class="btn btn-custom" ng-click="calcDistance(47.654663199999995, -122.3082465, 47.6567, -122.3103)" ng-disabled="chatForm.$invalid">
 			<i class="fa fa-pencil-square-o"></i> Share
 		</button>
 	</div>

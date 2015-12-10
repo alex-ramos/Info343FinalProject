@@ -1,18 +1,23 @@
-<form name="chatForm" id="chatForm" novalidate>
+<form name="chatForm" class="form-horizontal" id="chatForm" novalidate>
 	<h1>Sign Up</h1>
 	<!-- EMAIL -->
 	<div class="form-group" ng-class="{ 'has-error': chatForm.email.$touched && chatForm.email.$invalid }">
-		<label>Email</label>
-		<input type="email" name="email" placeholder="Email Address" class="form-control" ng-model="main.email" required>
+		<label class="col-sm-2 control-label">Email</label>
+		<div class="col-sm-10">
+			<input type="email" name="email" placeholder="Email Address" class="form-control" ng-model="main.email" required>
+		</div>
 		<div class="help-block" ng-messages="chatForm.email.$error" ng-if="chatForm.email.$touched">
 			<p ng-message="required">Your email address is required.</p>
 			<p ng-message="email">Your email address is invalid.</p>
 		</div>
 	</div>	
+
 	<!-- Username -->
 	<div class="form-group" ng-class="{ 'has-error': chatForm.username.$touched && chatForm.username.$invalid }">
-		<label>Username</label>
-		<input type="username" name="username" placeholder="Username" class="form-control" ng-model="main.username" ng-minlength="7" required>
+		<label class="col-sm-2 control-label">Username</label>
+		<div class="col-sm-10">
+			<input type="username" name="username" placeholder="Username" class="form-control" ng-model="main.username" ng-minlength="7" required>
+		</div>
 		<div class="help-block" ng-messages="chatForm.username.$error" ng-if="chatForm.username.$touched">
 			<p ng-message="required">Your username address is required.</p>
 			<p ng-message="username">Your username address is invalid.</p>
@@ -22,8 +27,10 @@
 
 	<!-- Password entries -->
 	<div class="form-group" ng-class="{ 'has-error': chatForm.password.$touched && chatForm.password.$invalid}">
-		<label>Password</label>
-		<input type="password" name="password" placeholder="Password" class="form-control" ng-model="main.password" ng-change="checkFormPass()" required>
+		<label class="col-sm-2 control-label">Password</label>
+		<div class="col-sm-10">
+			<input type="password" name="password" placeholder="Password" class="form-control" ng-model="main.password" ng-change="checkFormPass()" required>
+		</div>
 		<div class="help-block" ng-messages="chatForm.password.$error" ng-if="chatForm.password.$touched" ng-minlength="7" required>
 			<p ng-message="required">Please enter a password</p>
 			<p ng-message="minlength">Please type at least 7 characters for your password.</p>
@@ -31,8 +38,10 @@
 	</div>
 
 	<div class="form-group" ng-class="{ 'has-error': chatForm.cPassw.$touched && chatForm.cPassw.$invalid}">
-		<label>Confirm Password</label>
-		<input type="password" name="cPassw" placeholder="Confirm Password" class="form-control" ng-model="main.cPassw" ng-change="checkFormPassSU()"  required>
+		<label class="col-sm-2 control-label">Confirm Password</label>
+		<div class="col-sm-10">
+			<input type="password" name="cPassw" placeholder="Confirm Password" class="form-control" ng-model="main.cPassw" ng-change="checkFormPassSU()"  required>
+		</div>
 		<div class="help-block" ng-messages="chatForm.cPassw.$error" ng-if="chatForm.cPassw.$touched">
 			<p ng-message="required">Please confirm your password</p>
 		</div>
@@ -42,7 +51,8 @@
 	</div>
 
 	<!--The submit button and reset button.-->
-	<a href="#/users"><button type="submit" class="btn btn-success" ng-click="signup(chatForm.$valid)" ng-disabled="chatForm.$invalid" id="submitButton" value="Submit">Sign Up!</button></a>
-
+	<div class="form-group">
+		<a href="#/users"><button type="submit" class="btn btn-custom" ng-click="submitForm(chatForm.$valid)" ng-disabled="chatForm.$invalid" id="submitButton" value="Submit">Sign Up!</button></a>
+	</div>	
 </form>
 
