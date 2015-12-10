@@ -3,11 +3,16 @@
 <ul>
 	<li ng-repeat="message in messages">
 		<!-- edit a message -->
-		<input ng-model="message.text" ng-change="messages.$save(message)" />
-		<!-- delete a message -->
-		<button type="button" class="btn btn-custom" ng-click="messages.$remove(message)">
-			<i class="fa fa-times"></i>
-		</button>
+		<div class="message">
+			<p> {{message.author }} : {{message.text}}
+				<!-- delete a message -->
+				<button type="button" class="btn btn-custom" ng-click="messages.$remove(message)">
+					<i class="fa fa-times"></i>
+				</button>
+		      
+			</p>
+			
+		</div>
 	</li>
 </ul>
 

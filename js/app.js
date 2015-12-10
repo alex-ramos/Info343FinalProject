@@ -1,5 +1,7 @@
 'use strict';
 // create angular app
+
+var thisChatID = 0;
 var ChatApp = angular.module('ChatApp', ['ngMessages', 'firebase', 'ui.router']);
 
 
@@ -25,7 +27,7 @@ ChatApp.config(function($stateProvider, $urlRouterProvider){
     })
 
     .state('chatpage', {
-            url: '/chat',
+	    url: '/chat',
             templateUrl: 'partials/Chatpage.html',
             controller: 'MessageCtrl'
     })
@@ -39,7 +41,7 @@ ChatApp.config(function($stateProvider, $urlRouterProvider){
 
 
 // create angular controller
-ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', function($scope, $firebaseAuth, $firebaseArray) {
+ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', '$state',  function($scope, $firebaseAuth, $firebaseArray, $state) {
     var ref = new Firebase('https://knock-knock343.firebaseio.com/');
     var usersRef = new Firebase('https://knock-knock343.firebaseio.com/users/');
     var usernamesRef = new Firebase('https://knock-knock343.firebaseio.com/usernames/');
@@ -54,6 +56,7 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', fu
 
     function success(pos) {
         var crd = pos.coords;
+	console.log("success!");
         $scope.lat = Number.parseFloat(crd.latitude);
         $scope.lon = Number.parseFloat(crd.longitude);
     };
@@ -64,6 +67,7 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', fu
           
     $scope.login = function(isValid) {
     	var email = "";
+	console.log("called!");
 	   $scope.session = null;
 	   usersRef.orderByChild("username").equalTo($scope.main.username).on("child_added", function(snapshot) {
             	email = $scope.users.$getRecord(snapshot.key()).email;
@@ -74,6 +78,7 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', fu
       		password: $scope.main.password
     	}).then(function(authData) {
             	$scope.session = authData;
+		$state.go('users');
     		
     	}).catch(function(error) {
       		console.error("Authentication failed:", error);
@@ -81,23 +86,24 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', fu
     };
 
     $scope.signup = function(isValid) {
-        if(navigator.geolocation) {
-             $scope.login.loc = navigator.geolocation.getCurrentPosition(success, error, options);
-        } else {
-
-        }
-
+	console.log("I'm being called!");
+	$scope.lat = 0;
+	$scope.lon = 0;
     	$scope.authObj.$createUser({
     		  email: $scope.main.email,
     		  password: $scope.main.password
     	}).then(function(userData) {
     		  console.log("User " + userData.uid + " created successfully!");
+        	  if(navigator.geolocation) {
+            		 $scope.login.loc = navigator.geolocation.getCurrentPosition(success, error, options);
+        	  } else {}
 
     		    return $scope.authObj.$authWithPassword({
     			        email: $scope.main.email,
     				password: $scope.main.password
     		    });
     	}).then(function(authData) {
+			console.log($scope.lat);
         		$scope.users.$add({
     			lat: $scope.lat,
     			long: $scope.lon,
@@ -142,7 +148,7 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', fu
 
 }]);
 
-ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject', function($scope, $firebaseArray, $firebaseObject) {
+ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject', '$state', function($scope, $firebaseArray, $firebaseObject, $state) {
     var lat;
     var lon; 
     var ref = new Firebase("https://knock-knock343.firebaseio.com");
@@ -160,18 +166,28 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
 
 
     $scope.user = getUser();
-
+    console.log($scope.user);
+    $scope.lat = $scope.user.lat;
+    $scope.lon = $scope.user.long;
 
     $scope.getNearbyUsers = function (){
         var users = [];
         var distances = [];
-        var user = null;
+        var user = null;	
         $scope.trackLocation();
+	console.log("called this!!!");
+	
+		usersRef.once("value", function(snapshot) {
+			snapshot.forEach(function(childSnapshot){
+				var user = childSnapshot.val();
+				console.log(user);
+				console.log($scope.calcDistance(user.lat, user.long));
+				if($scope.calcDistance(user.lat, user.long) < 100 && user.username != $scope.user.username){
+					users.push(user);
+				}
+			});	
+        	});
 
-        usersRef.orderByChild('username').on('child_added', function(snapshot){
-                user = $scope.users.$getRecord(snapshot.key());
-                users.push(user);
-        });
 
         for(var i = 0; i < users.length; i++){
             var distance = $scope.calcDistance(Number.parseFloat(users[i].lat), Number.parseFloat(users[i].long));
@@ -180,19 +196,13 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
             }
         }
 
-        $scope.nearbyUsers = distances;
+        $scope.nearbyUserDistances = distances;
+	$scope.nearbyUsers = users;
         console.log($scope.nearbyUsers);
     };
 
 
 
-    $scope.messages = $firebaseArray(ref);
-
-    $scope.addMessage = function(){
-    	$scope.messages.$add({
-    		text: $scope.newMessage
-    	});
-    };	
 
     Number.prototype.toRad = function() {
         return this * Math.PI / 180;
@@ -264,15 +274,70 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
             alert("Geolocation is not supported by this browser.");
         }
     }
+    $scope.getNearbyUsers();
+    console.log($scope.user.$id);
+    $scope.messages = null;
+    $scope.startChat = function(user){
+	console.log('called startChat');
+	var chatsRef = new Firebase('https://knock-knock343.firebaseio.com/chats/');  	
+	var userChatsRef = new Firebase('https://knock-knock343.firebaseio.com/users/' + $scope.user.$id + '/chats/');
+	$scope.chats = $firebaseArray(chatsRef);
+	$scope.userChats = $firebaseArray(userChatsRef);
+	console.log(user);
+	var chatExists = false;
+	userChatsRef.orderByChild("user").equalTo(user).on("child_added", function(snapshot) {
+		chatExists = true;
+		console.log(snapshot.val().chatid);
+		console.log('this chat exists');
+		thisChatID = snapshot.val().chatid;
+		$scope.apply();	
+	});
+	if(!chatExists){
+		console.log('adding');
+		$scope.chats.$add({
+			participants : $scope.user.username + ',' + user
+		}).then( function(r){
+		$scope.userChats.$add({
+			user: user,
+			chatid: r.key()
+		});
+        	usersRef.orderByChild("username").equalTo(user).on("child_added", function(snapshot) {
+			console.log(snapshot.key());
+			var otherUserChatsRef = new Firebase('https://knock-knock343.firebaseio.com/users/' + snapshot.key() + '/chats/');
+			var otherUserChats = $firebaseArray(otherUserChatsRef);
+			otherUserChats.$add({
+				user: $scope.user.username,
+				chatid: r.key()
+			});
+		});
+		$scope.thisChat.id = r.key();
+		$scope.$apply();
+		});
 
+	}
 
-    var selectChat = function(){
-    	//gets the chat
-	var chatRef = new Firebase('https://knock-knock343.firebaseio.com/chats/chat1'); 
-	$scope.messages = $firebaseArray(chatRef);
-    }
-    selectChat();
-   
+	console.log('https://knock-knock343.firebaseio.com/chats/' + thisChatID + '/messages/');
+	console.log($scope.messages);
+	
+	$state.go('chatpage');
+	$scope.$apply();	
+	console.log($scope.messages);	
+    };
+    var refreshMessages = function(){
+	var messagesRef = new Firebase('https://knock-knock343.firebaseio.com/chats/' + thisChatID + '/messages/');		
+	$scope.messages = $firebaseArray(messagesRef);
+    };
+    refreshMessages();
     
+    $scope.addMessage = function(){
+	console.log(thisChatID);
+	var messagesRef = new Firebase('https://knock-knock343.firebaseio.com/chats/' + thisChatID + '/messages/');		
+	$scope.messages = $firebaseArray(messagesRef);
+    	$scope.messages.$add({
+		author: $scope.user.username, 
+    		text: $scope.newMessage
+    	});
+    };	
 
+   
 }]);
