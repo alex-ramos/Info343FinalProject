@@ -162,7 +162,19 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
 	return user;
     };
     $scope.user = getUser();
-    var getNearbyUsers = function (){};
+    var getNearbyUsers = function (){
+    	var nearbyUsers = [];
+	usersRef.once("value", function(snapshot) {
+		snapshot.forEach(function(childSnapshot){
+			var thisUser = childSnapshot;
+			if($scope.calcDistance(childSnapshot.lat, childSnapshot.long) < 999999999999999){
+				nearbyUsers.push(childSnapshot);
+			}
+		});
+		
+	});
+	return nearbyUsers;
+    };
 
 
     console.log($scope.user);
@@ -228,7 +240,7 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
 
         var d = R * c;
         //Fix after firebase is set up
-        console.log(d);
+        return d;
     }
 
     var options = {
@@ -264,6 +276,9 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
             console.log("Geolocation is not supported by this browser.");
         }
     }
+
+    getNearbyUsers();
+
 
 }]);
 
