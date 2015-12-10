@@ -143,32 +143,45 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', fu
 }]);
 
 ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject', function($scope, $firebaseArray, $firebaseObject) {
+    var lat;
+    var lon; 
     var ref = new Firebase("https://knock-knock343.firebaseio.com");
     var usersRef = new Firebase('https://knock-knock343.firebaseio.com/users/'); 
     $scope.session = ref.getAuth();
     var getUser = function(){
-	   var user = null;
+	    var user = null;
         usersRef.orderByChild("email").equalTo($scope.session.password.email).on("child_added", function(snapshot) {
                 user = $scope.users.$getRecord(snapshot.key());
         });
-        console.log(user);
-	return user;
-    };
-    $scope.user = getUser();
-    var getNearbyUsers = function (){
-    	var nearbyUsers = [];
-	usersRef.once("value", function(snapshot) {
-		snapshot.forEach(function(childSnapshot){
-			var thisUser = childSnapshot.val();
-			if($scope.calcDistance(thisUser.lat, thisUser.long) < 999999999999999){
-				nearbyUsers.push(thisUser);
-			}
-		});	
-	});
-	return nearbyUsers;
+	    return user;
     };
 
-    console.log($scope.user);
+
+    $scope.user = getUser();
+
+
+    $scope.getNearbyUsers = function (){
+        var users = [];
+        var distances = [];
+        var user = null;
+        $scope.trackLocation();
+
+        usersRef.orderByChild('username').on('child_added', function(snapshot){
+                user = $scope.users.$getRecord(snapshot.key());
+                users.push(user);
+        });
+
+        for(var i = 0; i < users.length; i++){
+            var distance = $scope.calcDistance(Number.parseFloat(users[i].lat), Number.parseFloat(users[i].long));
+            if(distance > 0 && distance < 100){
+                distances[users[i]] = distance;
+            }
+        }
+
+        $scope.distance = distances;
+    };
+
+
     $scope.messages = $firebaseArray(ref);
 
     $scope.addMessage = function(){
@@ -196,20 +209,23 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
   //Takes in 2 sets of lats and longs and returns their distance in meters
     $scope.calcDistance = function(lat2, lon2){
         var R = 6371000; // metres
-        var lat1 = $scope.user.lat;
-        var lon1 = $scope.user.long;
-        var phi1 = lat1 * Math.PI / 180;
-        var phi2 = lat2 * Math.PI / 180;
-        var dp = (lat2-lat1) * Math.PI / 180;
-        var dl = (lon2-lon1) * Math.PI / 180;
+        var lat1 = Number.parseFloat($scope.lat);
+        var lon1 = Number.parseFloat($scope.lon);
+        var phi1 = lat1.toRad();
+        var phi2 = lat2.toRad();
+        var dp = (lat2-lat1).toRad();
+        var dl = (lon2-lon1).toRad();
+
         var a = Math.sin(dp/2) * Math.sin(dp/2) +
                 Math.cos(phi1) * Math.cos(phi2) *
                 Math.sin(dl/2) * Math.sin(dl/2);
         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
         var d = R * c;
+
         //Fix after firebase is set up
         return d;
+
     }
 
     var options2 = {
@@ -220,38 +236,31 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
 
     function success2(pos) {
         var crd = pos.coords;
-        //Fix after firebase is set up
         var key = 0;
-        console.log('Your current position is:');
-        console.log('Latitude : ' + crd.latitude);
-        console.log('Longitude: ' + crd.longitude);
-        console.log('More or less ' + crd.accuracy + ' meters.');
         $scope.lat = crd.latitude;
         $scope.lon = crd.longitude;
-        $scope.acc = crd.accuracy;
+        lat = Number.parseFloat(crd.latitude);
+        lon = Number.parseFloat(crd.longitude);
+        //console.log(lat + ' ' + lon);
         usersRef.orderByChild("email").equalTo($scope.session.password.email).on("child_added", function(snapshot) {
            key = (snapshot.key());
         });       
         var userRef = usersRef.child(key);
         userRef.update({lat: $scope.lat, long:$scope.lon})
-        console.log(userRef);
-        console.log('Scope Latitude : ' + $scope.lat);
-        console.log('Scope Longitude: ' + $scope.lon);
     };
 
     function error2(err) {
-         console.warn('ERROR(' + err.code + '): ' + err.message);
+         alert('ERROR(' + err.code + '): ' + err.message);
     };
 
     $scope.trackLocation = function(){
         if(navigator.geolocation) {
            $scope.loc = navigator.geolocation.getCurrentPosition(success2, error2, options2);
         } else {
-            console.log("Geolocation is not supported by this browser.");
+            alert("Geolocation is not supported by this browser.");
         }
     }
 
-    $scope.nearbyUsers = getNearbyUsers();
     console.log($scope.nearbyUsers);
 
 }]);
