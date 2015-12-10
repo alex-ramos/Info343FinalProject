@@ -1,8 +1,12 @@
-<!--ADD Usernames from Firebase-->
-<p> logged in as {{ user.username }} </p>
-<ul ng-repeat="user in nearbyUsers">
-	<li> {{ user.username }} </li>
-</ul>
+<form name="chatForm" id="chatForm" novalidate>
+	<!--ADD Usernames from Firebase-->
+	<p> logged in as {{ user.username }} </p>
+	<ul ng-repeat="user in nearbyUsers">
+		<li> {{ user.username }} </li>
+		<a href="#/chat"><button type="submit" class="btn btn-custom" id="chatButton" value="Submit">Chat</button></a>
+	</ul>
+<button class="btn btn-success" ng-click="getNearbyUsers()" id="test" value="test">TEST</button>
+</form>
 
 
-<button class="btn btn-success" ng-click="trackLocation()" id="test" value="test">TEST</button>
+
