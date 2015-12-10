@@ -16,28 +16,24 @@ ChatApp.config(function($stateProvider, $urlRouterProvider){
         url: '/signIn',
         templateUrl: 'partials/signin.html',
         controller: 'LoginCtrl'
- 
     })
 
     .state('signup', {
             url: '/signUp',
             templateUrl: 'partials/signup.html' ,
             controller: 'LoginCtrl'
-
     })
 
     .state('chatpage', {
             url: '/chat',
             templateUrl: 'partials/Chatpage.html',
             controller: 'MessageCtrl'
- 
     })
 
     .state('users', {
             url: '/users',
             templateUrl: 'partials/userlist.html',
             controller: 'MessageCtrl'
- 
     })
 });
 
@@ -167,6 +163,10 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
 
     console.log($scope.user);
     $scope.messages = $firebaseArray(ref);
+<<<<<<< 84c9425999901e365d4cca7e0b8a4bac81d688fd
+=======
+
+>>>>>>> Bug fixes
     $scope.addMessage = function(){
     	$scope.messages.$add({
     		text: $scope.newMessage
@@ -266,5 +266,3 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
     }
 
 }]);
-
-
