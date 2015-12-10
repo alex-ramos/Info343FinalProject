@@ -5,11 +5,11 @@
 		<li ng-repeat="user in nearbyUsers"> {{ user.username}}  |   {{calcDistance(user.lat, user.long) | number:0}} meters
 
 		<button type="submit" class="btn btn-custom" id="{{user.username}}" value="Submit" ng-click="startChat(user.username)">
-		<i class="fa fa-paper-plane"></i>Chat
+		<i class="fa fa-paper-plane"></i>  Chat
 		</button>
 		</li>
 	</ul>
-	<button class="btn btn-success" ng-click="getNearbyUsers()" id="refresh" value="refresh">
+	<button class="btn btn-custom" ng-click="getNearbyUsers()" id="refresh" value="refresh">
 		<i class="fa fa-refresh"></i>Refresh Users
 	</button>
 </form>
