@@ -1,4 +1,8 @@
 <!--ADD Usernames from Firebase-->
 <p> logged in as {{ user.username }} </p>
+<ul ng-repeat="user in nearbyUsers">
+	<li> {{ user.username }} </li>
+</ul>
+
 
 <button class="btn btn-success" ng-click="trackLocation()" id="test" value="test">TEST</button>

@@ -158,16 +158,14 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
     	var nearbyUsers = [];
 	usersRef.once("value", function(snapshot) {
 		snapshot.forEach(function(childSnapshot){
-			var thisUser = childSnapshot;
-			if($scope.calcDistance(childSnapshot.lat, childSnapshot.long) < 999999999999999){
-				nearbyUsers.push(childSnapshot);
+			var thisUser = childSnapshot.val();
+			if($scope.calcDistance(thisUser.lat, thisUser.long) < 999999999999999){
+				nearbyUsers.push(thisUser);
 			}
-		});
-		
+		});	
 	});
 	return nearbyUsers;
     };
-
 
     console.log($scope.user);
     $scope.messages = $firebaseArray(ref);
@@ -197,13 +195,12 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
   //Takes in 2 sets of lats and longs and returns their distance in meters
     $scope.calcDistance = function(lat2, lon2){
         var R = 6371000; // metres
-        var lat1 = $scope.lat;
-        var lon1 = $scope.lon;
-        var phi1 = lat1.toRad();
-        var phi2 = lat2.toRad();
-        var dp = (lat2-lat1).toRad();
-        var dl = (lon2-lon1).toRad();
-
+        var lat1 = $scope.user.lat;
+        var lon1 = $scope.user.long;
+        var phi1 = lat1 * Math.PI / 180;
+        var phi2 = lat2 * Math.PI / 180;
+        var dp = (lat2-lat1) * Math.PI / 180;
+        var dl = (lon2-lon1) * Math.PI / 180;
         var a = Math.sin(dp/2) * Math.sin(dp/2) +
                 Math.cos(phi1) * Math.cos(phi2) *
                 Math.sin(dl/2) * Math.sin(dl/2);
@@ -248,7 +245,7 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
         }
     }
 
-    getNearbyUsers();
-
+    $scope.nearbyUsers = getNearbyUsers();
+    console.log($scope.nearbyUsers);
 
 }]);
