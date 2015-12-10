@@ -142,15 +142,16 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', fu
 
 }]);
 
-ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, $firebaseArray) {
+ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject', function($scope, $firebaseArray, $firebaseObject) {
     var ref = new Firebase("https://knock-knock343.firebaseio.com");
     var usersRef = new Firebase('https://knock-knock343.firebaseio.com/users/'); 
     $scope.session = ref.getAuth();
     var getUser = function(){
-	var user = null;
+	   var user = null;
         usersRef.orderByChild("email").equalTo($scope.session.password.email).on("child_added", function(snapshot) {
                 user = $scope.users.$getRecord(snapshot.key());
         });
+        console.log(user);
 	return user;
     };
     $scope.user = getUser();
@@ -160,12 +161,7 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
 
     $scope.getNearbyUsers = function (){
 
-    }
-
-
-
-
-    ;
+    };
 
 
     console.log($scope.user);
@@ -209,7 +205,7 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
         var d = R * c;
-        //Fix after firebase is set up
+        //Fix after firebase is set ups
         console.log(d);
     }
 
@@ -222,7 +218,7 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
     function success2(pos) {
         var crd = pos.coords;
         //Fix after firebase is set up
-
+        var key = 0;
         console.log('Your current position is:');
         console.log('Latitude : ' + crd.latitude);
         console.log('Longitude: ' + crd.longitude);
@@ -230,7 +226,12 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', function($scope, 
         $scope.lat = crd.latitude;
         $scope.lon = crd.longitude;
         $scope.acc = crd.accuracy;
-
+        usersRef.orderByChild("email").equalTo($scope.session.password.email).on("child_added", function(snapshot) {
+           key = (snapshot.key());
+        });       
+        var userRef = usersRef.child(key);
+        userRef.update({lat: $scope.lat, long:$scope.lon})
+        console.log(userRef);
         console.log('Scope Latitude : ' + $scope.lat);
         console.log('Scope Longitude: ' + $scope.lon);
     };
