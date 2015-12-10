@@ -16,8 +16,14 @@ body {
 	font-family: 'Ubuntu', sans-serif;
 }
 
- 
+h1 {
+  text-align: center;
+}
 
+#chatForm {
+  text-align: center;
+  /*padding-top: 1em;*/
+}
 
 .btn-custom { 
   color: #FFFFFF; 
@@ -66,4 +72,18 @@ fieldset[disabled] .btn-custom.active {
 .btn-custom .badge { 
   color: #149784; 
   background-color: #FFFFFF; 
+}
+
+
+
+@media screen and (min-width: 768px){
+
+}
+
+@media screen and (min-width: 992px){
+
+}
+
+@media screen and (min-width: 1200px){
+
 }
