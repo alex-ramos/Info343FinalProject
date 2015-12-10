@@ -12,7 +12,7 @@ AquaGreen: (20,151,132)
 */
 
 body {
-	background-color: rgb(178,202,209);
+	background-color: rgb(188,188,188);
 	font-family: 'Ubuntu', sans-serif;
 }
 
@@ -23,6 +23,11 @@ h1 {
 #chatForm {
   text-align: center;
   /*padding-top: 1em;*/
+}
+
+ul,li {
+  list-style: none;
+  list-style-type: none;
 }
 
 .btn-custom { 
