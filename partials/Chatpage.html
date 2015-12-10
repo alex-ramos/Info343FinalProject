@@ -5,7 +5,9 @@
 		<!-- edit a message -->
 		<input ng-model="message.text" ng-change="messages.$save(message)" />
 		<!-- delete a message -->
-		<button ng-click="messages.$remove(message)">Delete Message</button>
+		<button type="button" class="btn btn-custom" ng-click="messages.$remove(message)">
+			<i class="fa fa-times"></i>
+		</button>
 	</li>
 </ul>
 
@@ -13,7 +15,6 @@
 	<textarea placeholder="What's on your mind?" name="text" class="form-control" ng-model="newMessage" required></textarea>
 	<!--ADD Usernames from Firebase-->
 	<div class="form-group send-tweet">
-		<button type="submit" class="btn btn-custom" ng-disabled="chatForm.$invalid">
 		<!-- TEST CODE: FIX BEFORE TURINING IN -->
 		<button type="submit" class="btn btn-custom" ng-click="calcDistance(47.654663199999995, -122.3082465, 47.6567, -122.3103)" ng-disabled="chatForm.$invalid">
 			<i class="fa fa-pencil-square-o"></i> Share
