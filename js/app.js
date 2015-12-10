@@ -145,6 +145,8 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', fu
 ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject', function($scope, $firebaseArray, $firebaseObject) {
     var ref = new Firebase("https://knock-knock343.firebaseio.com");
     var usersRef = new Firebase('https://knock-knock343.firebaseio.com/users/'); 
+    var chatsRef = new Firebase('https://knock-knock343.firebaseio.com/chats/'); 
+    
     $scope.session = ref.getAuth();
     var getUser = function(){
 	   var user = null;
@@ -253,5 +255,15 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
 
     $scope.nearbyUsers = getNearbyUsers();
     console.log($scope.nearbyUsers);
+    var selectChat = function(){
+    	//gets the chat
+	var chatRef = new Firebase('https://knock-knock343.firebaseio.com/chats/chat1'); 
+	$scope.messages = $firebaseArray(chatRef);
+    }
+    selectChat();
+   
+    
+
+
 
 }]);
