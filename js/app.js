@@ -85,8 +85,8 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', '$
     };
 
     $scope.signup = function(isValid) {
-	$scope.lat = 0;
-	$scope.lon = 0;
+	   $scope.lat = 0;
+	   $scope.lon = 0;
     	$scope.authObj.$createUser({
     		  email: $scope.main.email,
     		  password: $scope.main.password
@@ -113,6 +113,8 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', '$
     	}).catch(function(error) {
     		  console.error("Error: ", error);
     	});
+
+        $scope.login(true);
     }
 
     //Checks both password fields and if they match each other
