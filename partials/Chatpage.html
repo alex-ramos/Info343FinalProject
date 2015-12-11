@@ -5,26 +5,22 @@
 	<li ng-repeat="message in messages">
 		<!-- edit a message -->
 		<div class="message">
-			<p> {{message.author }} : {{message.text}}
-				<!-- delete a message -->
-				<button type="button" class="btn btn-custom" ng-click="messages.$remove(message)">
-					<i class="fa fa-times"></i>
-				</button>
-		      
-			</p>
-			
+			<p> {{message.author }} : {{message.text}} </p>
 		</div>
 	</li>
 </ul>
+
 <!--Chat Form to add messages-->	
 <form name="chatForm" id="chatForm" ng-submit="addMessage()" novalidate>
-	<textarea placeholder="What's on your mind?" name="text" class="form-control" ng-model="newMessage" required></textarea>
+	<div id="chatBox">
+		<textarea id="textBox" placeholder="What's on your mind?" name="text" class="form-control" ng-model="newMessage" required></textarea>
 
-	<div class="form-group send-tweet">
-		<!-- TEST CODE: FIX BEFORE TURINING IN -->
-		<br>
-		<button type="submit" class="btn btn-custom" ng-click="calcDistance(47.654663199999995, -122.3082465, 47.6567, -122.3103)" ng-disabled="chatForm.$invalid">
-			<i class="fa fa-pencil-square-o"></i>  Share
-		</button>
+		<div class="form-group send-tweet">
+			<!-- TEST CODE: FIX BEFORE TURINING IN -->
+			<br>
+			<button type="submit" class="btn btn-custom" ng-click="calcDistance(47.654663199999995, -122.3082465, 47.6567, -122.3103)" ng-disabled="chatForm.$invalid">
+				<i class="fa fa-pencil-square-o"></i>  Send
+			</button>
+		</div>
 	</div>
 </form>

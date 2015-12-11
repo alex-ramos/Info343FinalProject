@@ -337,6 +337,7 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
 		author: $scope.user.username, 
     		text: $scope.newMessage
     	});
+    $("#submit")[0].reset();
     };	
 
    

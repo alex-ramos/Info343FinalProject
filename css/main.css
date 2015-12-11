@@ -14,15 +14,11 @@ AquaGreen: (20,151,132)
 body {
 	background-color: rgb(188,188,188);
 	font-family: 'Ubuntu', sans-serif;
+  height: 100%;
 }
 
 h1 {
   text-align: center;
-}
-
-#chatForm {
-  text-align: center;
-  /*padding-top: 1em;*/
 }
 
 ul,li {
@@ -30,9 +26,23 @@ ul,li {
   list-style-type: none;
 }
 
-/*.titleblock {
-  
-}*/
+.titleblock {
+  padding-top: 4em;
+}
+
+table {
+  width: 100%;
+}
+
+#chatForm {
+  text-align: center;
+}
+
+#chatBox {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
 
 .btn-custom { 
   color: #FFFFFF; 
@@ -40,7 +50,6 @@ ul,li {
   /*border-color: #114747; */
   border-color: white;
 } 
- 
 .btn-custom:hover, 
 .btn-custom:focus, 
 .btn-custom:active, 
