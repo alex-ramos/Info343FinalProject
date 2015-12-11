@@ -1,5 +1,8 @@
 <form name="chatForm" class="form-horizontal" id="chatForm" novalidate>
-	<h1>Sign In</h1>	
+	<h1>Sign In</h1>
+	<div class="alert alert-danger" ng-show="error!=''">
+		<strong>Error:</strong> {{error}}
+	</div>	  
 	<!-- Username -->
 	<div class="form-group" ng-class="{ 'has-error': chatForm.username.$touched && chatForm.username.$invalid }">
 		<label class="col-sm-2 control-label">Username</label>
@@ -25,9 +28,9 @@
 
 	<!--The submit button and reset button.-->
 	<div class="form-group">
-		<a href="#/users"><button type="submit" class="btn btn-custom" ng-click="login(chatForm.$valid)" id="submitButton" value="Submit">
+		<button type="submit" class="btn btn-custom" ng-click="login(chatForm.$valid)" id="submitButton" value="Submit">
 			<i class="fa fa-sign-in"></i>  Sign In!
-		</button></a>
+		</button>
 	</div>
 
 </form>

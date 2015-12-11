@@ -1,6 +1,8 @@
-<!--The Form for User's are Listed page-->	
+<!--The Form for User's are Listed page-->
+<p class="welcome" ng-show="user != null"> Welcome, {{user.username}}!</p><button class="btn btn-custom logout" ng-click="logout()"><i class="fa fa-pencil-square-o"></i>Log Out</button>
+
 <form name="chatForm" id="chatForm" novalidate>
-	<p id='currentUser'> logged in as {{ user.username }} </p>
+	<!--<p id='currentUser'> Welcome, {{ user.username }} </p>-->
 	<table class="table table-hover">
 		<tr>
 			<th><a jref="" ng-click="sort = 'username'"></a></th>

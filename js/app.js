@@ -11,7 +11,8 @@ ChatApp.config(function($stateProvider, $urlRouterProvider){
 
     $stateProvider.state('home', {
         url: '/home',
-        templateUrl: 'partials/titlepage.html' 
+        templateUrl: 'partials/titlepage.html',
+	controller: 'LoginCtrl'	
     })
 
     .state('signIn', {
@@ -47,7 +48,8 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', '$
     var usernamesRef = new Firebase('https://knock-knock343.firebaseio.com/usernames/');
     $scope.authObj = $firebaseAuth(ref);
     $scope.users = $firebaseArray(usersRef);
-    $scope.usernames = $firebaseArray(usernamesRef);
+    $scope.user = null;
+    $scope.error = '';
     var options = {
        enableHighAccuracy: true,
        timeout: Infinity,
@@ -78,12 +80,15 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', '$
       		email: email,
       		password: $scope.main.password
     	}).then(function(authData) {
-            	$scope.session = authData;
-		$state.go('users');
-    		
+		console.log(authData);
+		if(authData != null){
+            		$scope.session = authData;
+			$state.go('users');
+		}
     	}).catch(function(error) {
       		console.error("Authentication failed:", error);
-	   });   
+		$scope.error = error.code;  
+	});   
     };
 
     $scope.signup = function(isValid) {
@@ -288,7 +293,6 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
 			});
 		});
 		thisChatID = r.key();
-		$scope.$apply();
 		});
 
 	}
@@ -310,5 +314,10 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
     	});
         document.getElementById("chatForm").reset();    
 
-    };	
+    };
+    $scope.logout = function(){
+    	$state.user = null;
+	$state.go('home');
+    }
+
 }]);

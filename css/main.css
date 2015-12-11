@@ -97,12 +97,17 @@ fieldset[disabled] .btn-custom.active {
   background-color: #FFFFFF; 
 }
 
-.logout{
+.logout {
   position: fixed;
   top: 1em;
   right: 3em;
 }
 
+.welcome {
+  position: fixed;
+  top: 1.5em;
+  right: 11em;
+}
 .back{
   position: fixed;
   top: 1em;
