@@ -1,7 +1,8 @@
 'use strict';
 // create angular app
 
-var thisChatID = 0;
+
+var thisChatID = 0; //ID of chat the user is currently viewing. This global had to be used due to problems with variables being updating appropriatley when defined in the controller for whatever reason
 var ChatApp = angular.module('ChatApp', ['ngMessages', 'firebase', 'ui.router']);
 
 
@@ -43,13 +44,12 @@ ChatApp.config(function($stateProvider, $urlRouterProvider){
 
 // create angular controller
 ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', '$state',  function($scope, $firebaseAuth, $firebaseArray, $state) {
-    var ref = new Firebase('https://knock-knock343.firebaseio.com/');
-    var usersRef = new Firebase('https://knock-knock343.firebaseio.com/users/');
-    var usernamesRef = new Firebase('https://knock-knock343.firebaseio.com/usernames/');
-    $scope.authObj = $firebaseAuth(ref);
-    $scope.users = $firebaseArray(usersRef);
-    $scope.user = null;
-    $scope.error = '';
+    var ref = new Firebase('https://knock-knock343.firebaseio.com/'); //reference to database
+    var usersRef = new Firebase('https://knock-knock343.firebaseio.com/users/'); //reference to users in database
+    $scope.authObj = $firebaseAuth(ref); //used for authrization of user accounts
+    $scope.users = $firebaseArray(usersRef); //all of the users in the database
+    $scope.user = null; //current user that is signed in. Null if nobody is signed in.
+    $scope.error = ''; //error message to be displayed when sign in issues occur
     var options = {
        enableHighAccuracy: true,
        timeout: Infinity,
@@ -71,9 +71,10 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', '$
     //When user logs in
     $scope.login = function(isValid) {
     	var email = "";
-	   $scope.session = null;
-	   usersRef.orderByChild("username").equalTo($scope.main.username).on("child_added", function(snapshot) {
-            	email = $scope.users.$getRecord(snapshot.key()).email;
+	$scope.session = null;
+	//queries the user that has the username that the user entered. Then queries the email associated with that user for authorization purposes
+	usersRef.orderByChild("username").equalTo($scope.main.username).on("child_added", function(snapshot) {
+        email = $scope.users.$getRecord(snapshot.key()).email;
     	});
 
     	$scope.authObj.$authWithPassword({
@@ -82,6 +83,7 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', '$
     	}).then(function(authData) {
 		console.log(authData);
 		if(authData != null){
+			//user was logged in successfully
             		$scope.session = authData;
 			$state.go('users');
 		}
@@ -90,10 +92,11 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', '$
 		$scope.error = error.code;  
 	});   
     };
-
+    //signus up a new user
     $scope.signup = function(isValid) {
-	   $scope.lat = 0;
-	   $scope.lon = 0;
+	$scope.lat = 0;
+	$scope.lon = 0;
+        //creates a new user for authorization database
     	$scope.authObj.$createUser({
     		  email: $scope.main.email,
     		  password: $scope.main.password
@@ -107,6 +110,7 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', '$
     				password: $scope.main.password
     		    });
     	}).then(function(authData) {
+			//now adding the user to the user database
         		$scope.users.$add({
     			lat: $scope.lat,
     			long: $scope.lon,
@@ -114,8 +118,8 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', '$
     			username: $scope.main.username
     		    }).then(function(r){
         			usersRef.orderByChild("username").equalTo($scope.main.username).on("child_added", function(snapshot) {
-    				$scope.login();
-    			}); 
+    					$scope.login();
+    		 	}); 
     	   	 });
     	}).catch(function(error) {
     		  console.error("Error: ", error);
@@ -159,7 +163,10 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
     var usersRef = new Firebase('https://knock-knock343.firebaseio.com/users/'); 
     var chatsRef = new Firebase('https://knock-knock343.firebaseio.com/chats/'); 
     
+    //gets the authorization of the current session
     $scope.session = ref.getAuth();
+    
+    //gets the current user that is signed in
     var getUser = function(){
 	    var user = null;
         usersRef.orderByChild("email").equalTo($scope.session.password.email).on("child_added", function(snapshot) {
@@ -167,7 +174,6 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
         });
 	    return user;
     };
-
 
     $scope.user = getUser();
     $scope.lat = $scope.user.lat;
@@ -264,18 +270,21 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
     }
 
 
-    $scope.getNearbyUsers();
+    $scope.getNearbyUsers(); //called so these users can be displayed rihgt away
     $scope.messages = null;
+    //starts chat with the user specified by "user".
     $scope.startChat = function(user){
 	var chatsRef = new Firebase('https://knock-knock343.firebaseio.com/chats/');  	
 	var userChatsRef = new Firebase('https://knock-knock343.firebaseio.com/users/' + $scope.user.$id + '/chats/');
-	$scope.chats = $firebaseArray(chatsRef);
-	$scope.userChats = $firebaseArray(userChatsRef);
+	$scope.chats = $firebaseArray(chatsRef); //all of the chats in the database
+	$scope.userChats = $firebaseArray(userChatsRef); //the chats that are associated with the current user
 	var chatExists = false;
+	//queries the chat that is with the specified user. If the caht exists, the ID for that chat will be stored.
 	userChatsRef.orderByChild("user").equalTo(user).on("child_added", function(snapshot) {
 		chatExists = true;
 		thisChatID = snapshot.val().chatid;
 	});
+	//Otherwise, a new chat will be created. That is, a chat in the chats database, whose id will be stored in the chats section of both users (see database for structure)
 	if(!chatExists){
 		$scope.chats.$add({
 			participants : $scope.user.username + ',' + user
@@ -296,15 +305,19 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
 		});
 
 	}
-	
+	//takes us to the chat page
+	refreshMessages();
 	$state.go('chatpage');
     };
+    
+    //refreshes the messages displayed on the chat. Because firebase is instantanious, this is really only needed to be called once at the beginnin to set up the binding of $scope.messges
     var refreshMessages = function(){
 	   var messagesRef = new Firebase('https://knock-knock343.firebaseio.com/chats/' + thisChatID + '/messages/');		
 	   $scope.messages = $firebaseArray(messagesRef);
     };
     refreshMessages();
     
+    //adds a messsage to the chat
     $scope.addMessage = function(){
 	    var messagesRef = new Firebase('https://knock-knock343.firebaseio.com/chats/' + thisChatID + '/messages/');		
 	    $scope.messages = $firebaseArray(messagesRef);
@@ -315,6 +328,7 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
         document.getElementById("chatForm").reset();    
 
     };
+    //logs the user out
     $scope.logout = function(){
     	$state.user = null;
 	$state.go('home');
