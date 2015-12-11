@@ -36,12 +36,18 @@ table {
 
 #chatForm {
   text-align: center;
+    z-index: 1;
+
+  margin-top: 15px;
 }
 
 #chatBox {
-  position: fixed;
+background-color: rgb(188,188,188);
+ position: fixed;
   bottom: 0;
-  width: 100%;
+  width: 85%;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .btn-custom { 
