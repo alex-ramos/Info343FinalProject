@@ -270,7 +270,6 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
 	userChatsRef.orderByChild("user").equalTo(user).on("child_added", function(snapshot) {
 		chatExists = true;
 		thisChatID = snapshot.val().chatid;
-		$scope.apply();	
 	});
 	if(!chatExists){
 		$scope.chats.$add({
@@ -288,14 +287,13 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
 				chatid: r.key()
 			});
 		});
-		$scope.thisChat.id = r.key();
+		thisChatID = r.key();
 		$scope.$apply();
 		});
 
 	}
 	
 	$state.go('chatpage');
-	$scope.$apply();	
     };
     var refreshMessages = function(){
 	   var messagesRef = new Firebase('https://knock-knock343.firebaseio.com/chats/' + thisChatID + '/messages/');		
