@@ -36,14 +36,13 @@ table {
 
 #chatForm {
   text-align: center;
-    z-index: 1;
-
+  z-index: 1;
   margin-top: 15px;
 }
 
 #chatBox {
-background-color: rgb(188,188,188);
- position: fixed;
+  background-color: rgb(188,188,188);
+  position: fixed;
   bottom: 0;
   width: 85%;
   margin-right: auto;
@@ -98,7 +97,11 @@ fieldset[disabled] .btn-custom.active {
   background-color: #FFFFFF; 
 }
 
-
+.logout{
+  position: fixed;
+  top: 1em;
+  right: 3em;
+}
 
 @media screen and (min-width: 768px){
 
