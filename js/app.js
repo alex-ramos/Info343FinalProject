@@ -54,17 +54,19 @@ ChatApp.controller('LoginCtrl', ['$scope', '$firebaseAuth', '$firebaseArray', '$
        maximumAge: 0
     };
 
+    //When location is found
     function success(pos) {
         var crd = pos.coords;
-	console.log("success!");
         $scope.lat = Number.parseFloat(crd.latitude);
         $scope.lon = Number.parseFloat(crd.longitude);
     };
 
+    //If location is not found
     function error(err) {
       console.warn('ERROR(' + err.code + '): ' + err.message);
     };
           
+    //When user logs in
     $scope.login = function(isValid) {
     	var email = "";
 	   $scope.session = null;
@@ -166,6 +168,7 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
     $scope.lat = $scope.user.lat;
     $scope.lon = $scope.user.long;
 
+    //Finds users within 100m of the user and adds them to the scope
     $scope.getNearbyUsers = function (){
         var users = [];
         var distances = [];
@@ -194,9 +197,7 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
 	$scope.nearbyUsers = users;
     };
 
-
-
-
+    //To use in calc Distance function
     Number.prototype.toRad = function() {
         return this * Math.PI / 180;
     }
@@ -217,18 +218,18 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
         var d = R * c;
-
-        //Fix after firebase is set up
         return d;
 
     }
 
+    //Options object for location
     var options2 = {
       enableHighAccuracy: true,
       timeout: Infinity,
       maximumAge: 0
     };
 
+    //When location is found
     function success2(pos) {
         var crd = pos.coords;
         var key = 0;
@@ -236,7 +237,6 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
         $scope.lon = crd.longitude;
         lat = Number.parseFloat(crd.latitude);
         lon = Number.parseFloat(crd.longitude);
-        //console.log(lat + ' ' + lon);
         usersRef.orderByChild("email").equalTo($scope.session.password.email).on("child_added", function(snapshot) {
            key = (snapshot.key());
         });       
@@ -244,10 +244,12 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
         userRef.update({lat: $scope.lat, long:$scope.lon})
     };
 
+    //If locatin cannot be found
     function error2(err) {
          alert('ERROR(' + err.code + '): ' + err.message);
     };
 
+    //Finds the user and takes their location
     $scope.trackLocation = function(){
         if(navigator.geolocation) {
            $scope.loc = navigator.geolocation.getCurrentPosition(success2, error2, options2);
@@ -255,6 +257,8 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
             alert("Geolocation is not supported by this browser.");
         }
     }
+
+
     $scope.getNearbyUsers();
     $scope.messages = null;
     $scope.startChat = function(user){
