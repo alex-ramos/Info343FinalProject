@@ -201,18 +201,6 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
         return this * Math.PI / 180;
     }
 	
-	/* Write an accessible (on scope) chirp() function to save a tweet */
-    $scope.message = function() {
-        $scope.chirps.$add({
-            text: $scope.newMessage,
-            userId: -1,
-            likes: 0,
-        })
-        .then(function(){
-            $scope.newChirp = '';
-        })
-    }
-
   //Takes in 2 sets of lats and longs and returns their distance in meters
     $scope.calcDistance = function(lat2, lon2){
         var R = 6371000; // metres
@@ -321,6 +309,4 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
         document.getElementById("chatForm").reset();    
 
     };	
-
-   
 }]);
