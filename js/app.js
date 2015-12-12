@@ -162,7 +162,13 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
     var ref = new Firebase("https://knock-knock343.firebaseio.com");
     var usersRef = new Firebase('https://knock-knock343.firebaseio.com/users/'); 
     var chatsRef = new Firebase('https://knock-knock343.firebaseio.com/chats/'); 
-    
+    //logs the user out
+    $scope.logout = function(){
+    	$state.user = null;
+	$state.go('home');
+    }
+       
+     
     //gets the authorization of the current session
     $scope.session = ref.getAuth();
     
@@ -171,6 +177,12 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
 	    var user = null;
         usersRef.orderByChild("email").equalTo($scope.session.password.email).on("child_added", function(snapshot) {
                 user = $scope.users.$getRecord(snapshot.key());
+    console.log($scope.user);
+    if(user == null){	
+	console.log('got here');
+	$scope.logout();
+    }
+
         });
 	    return user;
     };
@@ -328,10 +340,5 @@ ChatApp.controller('MessageCtrl', ['$scope', '$firebaseArray', '$firebaseObject'
         document.getElementById("chatForm").reset();    
 
     };
-    //logs the user out
-    $scope.logout = function(){
-    	$state.user = null;
-	$state.go('home');
-    }
 
 }]);
